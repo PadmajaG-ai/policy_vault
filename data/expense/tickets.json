@@ -1,0 +1,132 @@
+[
+  {
+    "ticket_id": "TKT-1003",
+    "created": "2019-08-02",
+    "raised_by": "helpdesk",
+    "type": "incident",
+    "title": "Employee cannot log in to expense system after SSO switch",
+    "description": "User reports login loop after SSO migration.",
+    "resolution": "Cleared cached identity mapping. Resolved.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1021",
+    "created": "2020-01-14",
+    "raised_by": "p.nair (Travel Desk)",
+    "type": "incident",
+    "title": "Receipt images not attaching from mobile app",
+    "description": "Several users on older Android versions cannot attach photos to expense lines.",
+    "resolution": "Vendor app update 7.4 fixed the issue.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1042",
+    "created": "2021-03-10",
+    "raised_by": "v.rao (Head of Sales)",
+    "type": "change_request",
+    "title": "Temporary increase in domestic meal limit for Q2 sales offsite",
+    "description": "Sales team will hold a 3-city offsite in Q2 with client dinners each night. Request to raise the domestic meal daily limit from INR 2,500 to INR 4,000 for the duration of the offsite only (April to June 2021). Please revert to INR 2,500 after 30 June 2021.",
+    "resolution": "Limit changed to INR 4,000 on 12-Mar-2021 by a.menon. Revert reminder to be set for 30-Jun-2021. Ticket closed.",
+    "related_rules": ["R-001"]
+  },
+  {
+    "ticket_id": "TKT-1066",
+    "created": "2020-05-08",
+    "raised_by": "internal.audit",
+    "type": "change_request",
+    "title": "Add duplicate expense detection",
+    "description": "Internal audit FY19-20 found 37 duplicate claims (same vendor, same date, same amount) submitted on separate reports, total INR 4.1 lakh. Request an automated audit rule to flag such duplicates before approval.",
+    "resolution": "Audit rule 'Duplicate Detection' configured on 11-May-2020 by r.iyer. Flags lines with same amount, same date and same vendor.",
+    "related_rules": ["R-015"]
+  },
+  {
+    "ticket_id": "TKT-1081",
+    "created": "2021-11-19",
+    "raised_by": "helpdesk",
+    "type": "service_request",
+    "title": "Set up approval delegate for manager on leave",
+    "description": "Manager going on 3-week leave, needs delegate to approve team reports.",
+    "resolution": "Delegate configured.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1098",
+    "created": "2022-08-11",
+    "raised_by": "m.pillai (Finance Controller)",
+    "type": "change_request",
+    "title": "Reduce volume of reports needing Finance Controller approval",
+    "description": "Controller approval queue has over 400 reports a month and is delaying reimbursements by 2 weeks. Proposal: raise the second-approval threshold from INR 50,000 to INR 1,00,000. Policy document will be updated in the next revision to match.",
+    "resolution": "Workflow condition changed to INR 1,00,000 on 17-Aug-2022 by a.menon. Closed pending policy update.",
+    "related_rules": ["R-008"]
+  },
+  {
+    "ticket_id": "TKT-1121",
+    "created": "2023-01-05",
+    "raised_by": "internal.audit",
+    "type": "change_request",
+    "title": "Flag weekend expenses for review",
+    "description": "Audit sample found personal weekend dining being claimed as business meals. Request a flag on any transaction dated Saturday or Sunday so approvers check the business purpose.",
+    "resolution": "Audit rule configured on 09-Jan-2023 by s.khan.",
+    "related_rules": ["R-016"]
+  },
+  {
+    "ticket_id": "TKT-1135",
+    "created": "2021-09-03",
+    "raised_by": "erp.integration.team",
+    "type": "incident",
+    "title": "Mileage expense lines failing ERP posting",
+    "description": "Since 1-Sep, around 60 mileage lines per day are failing when posted to the ERP general ledger. Error from the interface: 'field length exceeded'. Payments to employees are delayed.",
+    "resolution": "Fixed by expense config team. Postings resumed 06-Sep-2021.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1150",
+    "created": "2023-03-20",
+    "raised_by": "hr.policy",
+    "type": "change_request",
+    "title": "Update personal car mileage rate to INR 12/km",
+    "description": "Policy v3.1 revises the personal car mileage rate to INR 12 per km effective 1-Apr-2023 due to fuel price increases.",
+    "resolution": "Rate updated on 01-Apr-2023 by s.khan.",
+    "related_rules": ["R-006"]
+  },
+  {
+    "ticket_id": "TKT-1163",
+    "created": "2024-06-27",
+    "raised_by": "helpdesk",
+    "type": "incident",
+    "title": "Expense report stuck in 'Pending Approval' after approver left company",
+    "description": "Approver's account deactivated; three reports stuck.",
+    "resolution": "Reports reassigned to new line manager.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1177",
+    "created": "2025-03-28",
+    "raised_by": "group.finance",
+    "type": "communication",
+    "title": "Travel & Expense Policy v3.2 published",
+    "description": "Policy v3.2 is effective 1-Apr-2025. Main change: metro hotel cap reduced from INR 10,000 to INR 8,000 per night. Please circulate to all employees.",
+    "resolution": "Communication sent to all staff via intranet. Closed.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1189",
+    "created": "2025-07-14",
+    "raised_by": "helpdesk",
+    "type": "incident",
+    "title": "Corporate card feed missing transactions for two days",
+    "description": "Card transactions from 10-11 July missing in users' available expenses.",
+    "resolution": "Bank re-sent the feed file. Resolved.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-1202",
+    "created": "2025-11-03",
+    "raised_by": "hr.ops",
+    "type": "service_request",
+    "title": "Knowledge transfer: R. Iyer retiring 31-Dec-2025",
+    "description": "R. Iyer (expense system configuration lead since 2019) retires on 31-Dec-2025. Please arrange handover of configuration knowledge to the new admin.",
+    "resolution": "Two handover sessions held. No written documentation produced.",
+    "related_rules": []
+  }
+]

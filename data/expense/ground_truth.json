@@ -1,0 +1,75 @@
+{
+  "_note": "ANSWER KEY. Never feed this file to the agents. Use it only in tests/evaluation to prove accuracy (e.g. '4 of 4 drifts caught, 0 false alarms').",
+  "company": "Kestrel Components Pvt Ltd (fictional)",
+  "drifts": [
+    {
+      "id": "D1",
+      "rule_id": "R-001",
+      "topic": "Domestic meal limit per day",
+      "policy_value": 2500,
+      "config_value": 4000,
+      "unit": "INR/day",
+      "direction": "config more lenient than policy",
+      "root_cause": "Temporary increase for the Q2-2021 sales offsite (TKT-1042) was never reverted.",
+      "business_risk": "Overspend on meals across every domestic trip since 2021; audit finding risk."
+    },
+    {
+      "id": "D2",
+      "rule_id": "R-003",
+      "topic": "Itemised receipt required above",
+      "policy_value": 500,
+      "config_value": 2000,
+      "unit": "INR/line",
+      "direction": "config more lenient than policy",
+      "root_cause": "No ticket. Undocumented change; nobody knows why.",
+      "business_risk": "Claims between 500 and 2000 INR pass without receipts: GST input credit lost and fraud exposure."
+    },
+    {
+      "id": "D3",
+      "rule_id": "R-004",
+      "topic": "Hotel cap, metro cities, per night",
+      "policy_value": 8000,
+      "config_value": 10000,
+      "unit": "INR/night",
+      "direction": "config more lenient than policy",
+      "root_cause": "Policy v3.2 (TKT-1177, April 2025) lowered the cap, but no configuration change was ever raised.",
+      "business_risk": "Every metro hotel night can exceed policy by up to 2000 INR with no violation flag."
+    },
+    {
+      "id": "D4",
+      "rule_id": "R-008",
+      "topic": "Finance Controller second approval threshold",
+      "policy_value": 50000,
+      "config_value": 100000,
+      "unit": "INR/report",
+      "direction": "config more lenient than policy",
+      "root_cause": "Threshold raised to cut controller workload (TKT-1098, 2022) 'pending policy update' that never happened.",
+      "business_risk": "Reports between 50k and 100k INR skip a control the written policy promises to auditors."
+    }
+  ],
+  "aligned_rules": ["R-002", "R-005", "R-006", "R-007", "R-009", "R-010", "R-011", "R-017"],
+  "documented_by_ticket_only": {
+    "R-015": "TKT-1066",
+    "R-016": "TKT-1121"
+  },
+  "undocumented_rules": [
+    {
+      "id": "U1",
+      "rule_id": "R-012",
+      "topic": "Client entertainment with a government official routes to Legal",
+      "expert_answer_ref": "EXP-U1"
+    },
+    {
+      "id": "U2",
+      "rule_id": "R-013",
+      "topic": "Cost centre CC-4410 excluded from auto-approval",
+      "expert_answer_ref": "EXP-U2"
+    },
+    {
+      "id": "U3",
+      "rule_id": "R-014",
+      "topic": "Vehicle registration field hidden on the mileage form",
+      "expert_answer_ref": "EXP-U3"
+    }
+  ]
+}

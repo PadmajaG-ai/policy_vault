@@ -1,0 +1,47 @@
+{
+  "_note": "Simulated retired expert used to demo the interview agent. In the demo you (or a teammate) can type these answers live, or the app can play them back. Keep the tone conversational, the way a real person answers.",
+  "expert": {
+    "name": "R. Iyer",
+    "role": "Expense system configuration lead, 2019-2025 (retired 31-Dec-2025)",
+    "note": "Fictional person"
+  },
+  "answers": [
+    {
+      "ref": "EXP-U1",
+      "rule_id": "R-012",
+      "question_hint": "Why does client entertainment involving a government official route to Legal & Compliance?",
+      "answer": "That came from the 2019 statutory audit. Our auditors found that a sales team had hosted dinners for officials from a state electricity board while we were bidding on a tender. Nothing illegal was proven, but the auditors said we had no control over hospitality to public officials, and that is a big risk under anti-bribery law. The CFO asked me to add a step so that any entertainment line marked 'government official' goes to Legal before payment. It should never be removed. Legal told me they get about five of these a month.",
+      "decided_by": "CFO, on recommendation of statutory auditors",
+      "decided_on": "2019-10",
+      "risk_if_removed": "high"
+    },
+    {
+      "ref": "EXP-U2",
+      "rule_id": "R-013",
+      "question_hint": "Why is cost centre CC-4410 excluded from auto-approval?",
+      "answer": "CC-4410 is the Hosur plant maintenance cost centre. In early 2020 there was an internal investigation there because contractors' expenses were being routed through employees' reports. HR and Internal Audit asked me to switch off auto-approval for that cost centre so every report got a human check. The investigation closed in 2021, I believe, but nobody ever told me to switch it back. Honestly it is probably safe to remove now, but check with Internal Audit first.",
+      "decided_by": "Internal Audit and HR",
+      "decided_on": "2020-02",
+      "risk_if_removed": "low, confirm with Internal Audit"
+    },
+    {
+      "ref": "EXP-U3",
+      "rule_id": "R-014",
+      "question_hint": "Why is the vehicle registration field hidden on the mileage form?",
+      "answer": "Oh, that one caused a mess. In September 2021 the mileage lines started failing when they posted to the ERP. The vehicle registration field was being passed into a text field in the ERP interface that only takes 10 characters, and some people typed registrations with spaces and state names, so it overflowed. The ERP team said fixing the interface would take a month. So as a quick fix I hid the field on the form. We lost the vehicle number, but payments started flowing again. If anyone wants that field back, the ERP interface mapping has to be fixed first, otherwise posting will break again.",
+      "decided_by": "r.iyer with ERP integration team (emergency fix)",
+      "decided_on": "2021-09-06",
+      "risk_if_removed": "high, ERP posting will fail unless the interface is fixed first",
+      "linked_ticket": "TKT-1135"
+    },
+    {
+      "ref": "EXP-D2",
+      "rule_id": "R-003",
+      "question_hint": "Why is the receipt threshold INR 2,000 when policy says INR 500?",
+      "answer": "That was a COVID-time decision in November 2020. Most claims were small local conveyance and meals, and the approvers were drowning in receipt checks while everyone was working from home. The Finance Controller at the time asked me verbally to raise it to 2,000 for a few months. There was no ticket, just a phone call. It was supposed to go back to 500. I think everyone forgot.",
+      "decided_by": "Finance Controller (verbal, no ticket)",
+      "decided_on": "2020-11",
+      "risk_if_removed": "none; reverting to 500 restores policy compliance"
+    }
+  ]
+}
