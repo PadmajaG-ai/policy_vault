@@ -1,0 +1,6 @@
+Ticket TKT-1003 (incident), created 2019-08-02 by helpdesk
+Title: Employee cannot log in to expense system after SSO switch
+
+Description: User reports login loop after SSO migration.
+
+Resolution: Cleared cached identity mapping. Resolved.

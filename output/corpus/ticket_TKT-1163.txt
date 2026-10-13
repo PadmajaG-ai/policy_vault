@@ -1,0 +1,6 @@
+Ticket TKT-1163 (incident), created 2024-06-27 by helpdesk
+Title: Expense report stuck in 'Pending Approval' after approver left company
+
+Description: Approver's account deactivated; three reports stuck.
+
+Resolution: Reports reassigned to new line manager.

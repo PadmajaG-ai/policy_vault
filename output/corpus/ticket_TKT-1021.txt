@@ -1,0 +1,6 @@
+Ticket TKT-1021 (incident), created 2020-01-14 by p.nair (Travel Desk)
+Title: Receipt images not attaching from mobile app
+
+Description: Several users on older Android versions cannot attach photos to expense lines.
+
+Resolution: Vendor app update 7.4 fixed the issue.

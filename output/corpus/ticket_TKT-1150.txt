@@ -1,0 +1,7 @@
+Ticket TKT-1150 (change_request), created 2023-03-20 by hr.policy
+Title: Update personal car mileage rate to INR 12/km
+
+Description: Policy v3.1 revises the personal car mileage rate to INR 12 per km effective 1-Apr-2023 due to fuel price increases.
+
+Resolution: Rate updated on 01-Apr-2023 by s.khan.
+Related configuration rules: R-006

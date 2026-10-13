@@ -1,0 +1,6 @@
+Ticket TKT-1135 (incident), created 2021-09-03 by erp.integration.team
+Title: Mileage expense lines failing ERP posting
+
+Description: Since 1-Sep, around 60 mileage lines per day are failing when posted to the ERP general ledger. Error from the interface: 'field length exceeded'. Payments to employees are delayed.
+
+Resolution: Fixed by expense config team. Postings resumed 06-Sep-2021.

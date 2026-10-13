@@ -1,0 +1,6 @@
+Ticket TKT-1081 (service_request), created 2021-11-19 by helpdesk
+Title: Set up approval delegate for manager on leave
+
+Description: Manager going on 3-week leave, needs delegate to approve team reports.
+
+Resolution: Delegate configured.

@@ -1,0 +1,6 @@
+Ticket TKT-1189 (incident), created 2025-07-14 by helpdesk
+Title: Corporate card feed missing transactions for two days
+
+Description: Card transactions from 10-11 July missing in users' available expenses.
+
+Resolution: Bank re-sent the feed file. Resolved.

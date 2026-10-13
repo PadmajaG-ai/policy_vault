@@ -1,0 +1,7 @@
+Ticket TKT-1042 (change_request), created 2021-03-10 by v.rao (Head of Sales)
+Title: Temporary increase in domestic meal limit for Q2 sales offsite
+
+Description: Sales team will hold a 3-city offsite in Q2 with client dinners each night. Request to raise the domestic meal daily limit from INR 2,500 to INR 4,000 for the duration of the offsite only (April to June 2021). Please revert to INR 2,500 after 30 June 2021.
+
+Resolution: Limit changed to INR 4,000 on 12-Mar-2021 by a.menon. Revert reminder to be set for 30-Jun-2021. Ticket closed.
+Related configuration rules: R-001
