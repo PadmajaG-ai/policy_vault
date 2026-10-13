@@ -171,8 +171,13 @@ Time budget: ~3 hrs weekdays, 5+ hrs weekends. If a milestone slips by a day, cu
 
 ## 12. Status (update every session)
 
-- **Last updated:** 30 Sep 2026
-- **Done:** idea, demo script, synthetic expense data, data check passing, GCP project + APIs + billing.
-- **In progress:** first Cloud Run deploy (Dockerfile not being detected; fixing).
-- **Next:** Gemini extracts rules from `policy.pdf` into the generic rule shape.
-- **Problems log:** ADC login needed all consent checkboxes ticked; build fell back to Buildpacks because Dockerfile wasn't found.
+- **Last updated:** 13 Oct 2026
+- **Done:** data pack + demo script; hello-world live on Cloud Run; git repo pushed to GitHub (PadmajaG-ai/policy_vault); `extract.py` (Gemini → policy rules, enum-constrained to config slots, config values hidden; 12/12 matched); `drift.py` comparison (offline: 4 drifts, 8 aligned, 0 false alarms); `tools/evaluate.py` scoring.
+- **In progress:** `drift.py` root cause from tickets (Gemini) — needs first live run.
+- **Schedule slipped ~10 days. Re-plan (scope cut):**
+  - 13 Oct: drift + root cause + eval verified; commit.
+  - 14 Oct: Gap Finder + Interviewer (expert replies from `expert_answers.json`) + Decision Records (Firestore) + Ask Why.
+  - 15 Oct: one-page Flask UI (Scan → report → interview → ask), redeploy to Cloud Run.
+  - 16 Oct: demo video, README, architecture diagram, deck. 17 Oct submit. 18 Oct buffer.
+  - **Cut:** inventory pack, ADK (plain google-genai SDK instead), Vertex AI Search, Agent Engine, file upload (bundled data pack; upload only if time).
+- **Problems log:** ADC login needed all consent checkboxes ticked; build fell back to Buildpacks because Dockerfile wasn't found (fixed). pip SSL errors → use `pip install --use-feature=truststore`. R-011 `economy_class` vs `economy` would have been a false alarm → token comparison that ignores unit words.

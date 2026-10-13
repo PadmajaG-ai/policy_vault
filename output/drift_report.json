@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "checked": 12,
+    "drifts": 4,
+    "aligned": 8,
+    "needs_review": 0,
+    "policy_only": 2
+  },
+  "findings": [
+    {
+      "rule_id": "R-009",
+      "topic": "Expense report submission deadline",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "30",
+      "config_value": "30",
+      "unit": "days",
+      "policy_source": "Policy section 3.2",
+      "policy_quote": "Expense reports must be submitted within 30 days of the end of the trip or the date the expense was incurred.",
+      "config_location": "Policies > Submission Rules",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-003",
+      "topic": "Receipt required above",
+      "status": "drift",
+      "reason": "config is higher than policy",
+      "policy_value": "500",
+      "config_value": "2000",
+      "unit": "INR/line",
+      "policy_source": "Policy section 4.1",
+      "policy_quote": "An itemised receipt or tax invoice is mandatory for every expense line above INR 500.",
+      "config_location": "Policies > Receipt Requirements",
+      "last_changed": "2020-11-23",
+      "changed_by": "r.iyer",
+      "root_cause": "No record found. Ask the expert.",
+      "root_cause_sources": [],
+      "root_cause_found": false,
+      "business_risk": "Employees may be claiming expenses without receipts up to 2000 INR/line, leading to potential financial loss or audit non-compliance."
+    },
+    {
+      "rule_id": "R-001",
+      "topic": "Domestic meal limit",
+      "status": "drift",
+      "reason": "config is higher than policy",
+      "policy_value": "2500",
+      "config_value": "4000",
+      "unit": "INR/day",
+      "policy_source": "Policy section 5.1",
+      "policy_quote": "Domestic travel: meals are reimbursed at actual cost up to a maximum of INR 2,500 per person per day.",
+      "config_location": "Policies > Expense Types > Meals > Limits",
+      "last_changed": "2021-03-12",
+      "changed_by": "a.menon",
+      "root_cause": "The domestic meal limit was temporarily increased for a Q2 sales offsite, but the system was not reverted to the policy value.",
+      "root_cause_sources": [
+        "TKT-1042"
+      ],
+      "root_cause_found": true,
+      "business_risk": "Higher meal expenses are being approved than allowed by policy, leading to increased operational costs."
+    },
+    {
+      "rule_id": "R-002",
+      "topic": "International meal limit",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "75",
+      "config_value": "75",
+      "unit": "USD/day",
+      "policy_source": "Policy section 5.2",
+      "policy_quote": "International travel: meals are reimbursed at actual cost up to a maximum of USD 75 per person per day, or the local-currency equivalent.",
+      "config_location": "Policies > Expense Types > Meals > Limits",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-010",
+      "topic": "Alcohol reimbursable",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "false",
+      "config_value": "false",
+      "unit": "boolean",
+      "policy_source": "Policy section 5.3",
+      "policy_quote": "Alcohol is not reimbursable under any circumstances, including during client entertainment.",
+      "config_location": "Policies > Expense Types > Alcohol",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-004",
+      "topic": "Metro city hotel nightly cap",
+      "status": "drift",
+      "reason": "config is higher than policy",
+      "policy_value": "8000",
+      "config_value": "10000",
+      "unit": "INR/night",
+      "policy_source": "Policy section 6.2",
+      "policy_quote": "Metro cities (Mumbai, Delhi NCR, Bengaluru, Chennai, Hyderabad, Kolkata, Pune) INR 8,000",
+      "config_location": "Policies > Expense Types > Lodging > Limits",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer",
+      "root_cause": "The policy was updated to reduce the metro city hotel nightly cap, but the system configuration was not updated to reflect this change.",
+      "root_cause_sources": [
+        "TKT-1177"
+      ],
+      "root_cause_found": true,
+      "business_risk": "Employees may be claiming higher hotel expenses than permitted by the current policy, resulting in unnecessary expenditure."
+    },
+    {
+      "rule_id": "R-005",
+      "topic": "Non-metro city hotel nightly cap",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "5000",
+      "config_value": "5000",
+      "unit": "INR/night",
+      "policy_source": "Policy section 6.2",
+      "policy_quote": "All other cities INR 5,000",
+      "config_location": "Policies > Expense Types > Lodging > Limits",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-011",
+      "topic": "Airfare class for short flights",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "economy_class",
+      "config_value": "economy",
+      "unit": "class",
+      "policy_source": "Policy section 7.1",
+      "policy_quote": "Air travel must be booked in economy class for any flight shorter than 6 hours.",
+      "config_location": "Policies > Travel Class Rules",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-006",
+      "topic": "Personal car mileage rate",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "12",
+      "config_value": "12",
+      "unit": "INR/km",
+      "policy_source": "Policy section 8.1",
+      "policy_quote": "Employees using their personal car for business travel are reimbursed at INR 12 per kilometre.",
+      "config_location": "Policies > Mileage > Rates",
+      "last_changed": "2023-04-01",
+      "changed_by": "s.khan"
+    },
+    {
+      "rule_id": "R-017",
+      "topic": "Cash advance maximum amount",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "25000",
+      "config_value": "25000",
+      "unit": "INR",
+      "policy_source": "Policy section 10.1",
+      "policy_quote": "A cash advance of up to INR 25,000 per trip may be requested where corporate card use is not possible.",
+      "config_location": "Policies > Cash Advance",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-007",
+      "topic": "Expense report approval level 1",
+      "status": "aligned",
+      "reason": "values equal",
+      "policy_value": "line_manager",
+      "config_value": "line_manager",
+      "unit": "role",
+      "policy_source": "Policy section 11.1",
+      "policy_quote": "Every expense report must be approved by the employee's line manager.",
+      "config_location": "Workflows > Approval > Step 1",
+      "last_changed": "2019-07-01",
+      "changed_by": "r.iyer"
+    },
+    {
+      "rule_id": "R-008",
+      "topic": "Finance Controller approval threshold",
+      "status": "drift",
+      "reason": "config is higher than policy",
+      "policy_value": "50000",
+      "config_value": "100000",
+      "unit": "INR/report",
+      "policy_source": "Policy section 11.2",
+      "policy_quote": "Any expense report with a total above INR 50,000 requires a second approval by the Finance Controller before payment.",
+      "config_location": "Workflows > Approval > Step 2 Condition",
+      "last_changed": "2022-08-17",
+      "changed_by": "a.menon",
+      "root_cause": "The Finance Controller approval threshold was increased in the system to reduce the volume of reports requiring approval, with the policy update pending.",
+      "root_cause_sources": [
+        "TKT-1098"
+      ],
+      "root_cause_found": true,
+      "business_risk": "Fewer reports are receiving Finance Controller oversight than mandated by the current policy, potentially increasing financial risk or non-compliance."
+    }
+  ],
+  "policy_only": [
+    {
+      "policy_source": "7.1",
+      "quote": "Business class for longer flights requires Vice President approval.",
+      "topic": "Business class approval",
+      "matched_rule_id": "none",
+      "value": "vice_president",
+      "unit": "role",
+      "match_confidence": "high",
+      "source_type": "policy"
+    },
+    {
+      "policy_source": "7.2",
+      "quote": "Rail travel may be booked in AC 2-tier or equivalent.",
+      "topic": "Rail travel class",
+      "matched_rule_id": "none",
+      "value": "ac_2_tier",
+      "unit": "class",
+      "match_confidence": "high",
+      "source_type": "policy"
+    }
+  ]
+}

@@ -12,15 +12,12 @@ Usage:  python extract.py data/expense/policy.pdf data/expense/config_rules.csv
 
 import csv
 import json
-import os
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
-from google import genai
 from google.genai import types
 
-load_dotenv()
+import gemini
 
 NO_MATCH = "none"
 CONFIDENCE = ["high", "medium", "low"]
@@ -105,25 +102,14 @@ def extract_policy_rules(policy_pdf, config_csv):
     keys = load_config_keys(config_csv)
     rule_ids = [k["rule_id"] for k in keys]
 
-    client = genai.Client(
-        vertexai=True,
-        project=os.environ["GOOGLE_CLOUD_PROJECT"],
-        location=os.environ.get("GEMINI_LOCATION", "global"),
-    )
-    response = client.models.generate_content(
-        model=os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"),
-        contents=[
+    result = gemini.generate_json(
+        [
             types.Part.from_bytes(data=Path(policy_pdf).read_bytes(), mime_type="application/pdf"),
             build_prompt(keys),
         ],
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=build_schema(rule_ids),
-            temperature=0,
-            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
-        ),
+        build_schema(rule_ids),
     )
-    return validate(json.loads(response.text), rule_ids)
+    return validate(result, rule_ids)
 
 
 if __name__ == "__main__":
