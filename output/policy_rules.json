@@ -1,0 +1,142 @@
+[
+  {
+    "policy_source": "3.2",
+    "quote": "Expense reports must be submitted within 30 days of the end of the trip or the date the expense was incurred.",
+    "topic": "Expense report submission deadline",
+    "matched_rule_id": "R-009",
+    "value": "30",
+    "unit": "days",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "4.1",
+    "quote": "An itemised receipt or tax invoice is mandatory for every expense line above INR 500.",
+    "topic": "Receipt required above",
+    "matched_rule_id": "R-003",
+    "value": "500",
+    "unit": "INR/line",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "5.1",
+    "quote": "Domestic travel: meals are reimbursed at actual cost up to a maximum of INR 2,500 per person per day.",
+    "topic": "Domestic meal limit",
+    "matched_rule_id": "R-001",
+    "value": "2500",
+    "unit": "INR/day",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "5.2",
+    "quote": "International travel: meals are reimbursed at actual cost up to a maximum of USD 75 per person per day, or the local-currency equivalent.",
+    "topic": "International meal limit",
+    "matched_rule_id": "R-002",
+    "value": "75",
+    "unit": "USD/day",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "5.3",
+    "quote": "Alcohol is not reimbursable under any circumstances, including during client entertainment.",
+    "topic": "Alcohol reimbursable",
+    "matched_rule_id": "R-010",
+    "value": "false",
+    "unit": "boolean",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "6.2",
+    "quote": "Metro cities (Mumbai, Delhi NCR, Bengaluru, Chennai, Hyderabad, Kolkata, Pune) INR 8,000",
+    "topic": "Metro city hotel nightly cap",
+    "matched_rule_id": "R-004",
+    "value": "8000",
+    "unit": "INR/night",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "6.2",
+    "quote": "All other cities INR 5,000",
+    "topic": "Non-metro city hotel nightly cap",
+    "matched_rule_id": "R-005",
+    "value": "5000",
+    "unit": "INR/night",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "7.1",
+    "quote": "Air travel must be booked in economy class for any flight shorter than 6 hours.",
+    "topic": "Airfare class for short flights",
+    "matched_rule_id": "R-011",
+    "value": "economy_class",
+    "unit": "class",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "7.1",
+    "quote": "Business class for longer flights requires Vice President approval.",
+    "topic": "Business class approval",
+    "matched_rule_id": "none",
+    "value": "vice_president",
+    "unit": "role",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "7.2",
+    "quote": "Rail travel may be booked in AC 2-tier or equivalent.",
+    "topic": "Rail travel class",
+    "matched_rule_id": "none",
+    "value": "ac_2_tier",
+    "unit": "class",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "8.1",
+    "quote": "Employees using their personal car for business travel are reimbursed at INR 12 per kilometre.",
+    "topic": "Personal car mileage rate",
+    "matched_rule_id": "R-006",
+    "value": "12",
+    "unit": "INR/km",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "10.1",
+    "quote": "A cash advance of up to INR 25,000 per trip may be requested where corporate card use is not possible.",
+    "topic": "Cash advance maximum amount",
+    "matched_rule_id": "R-017",
+    "value": "25000",
+    "unit": "INR",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "11.1",
+    "quote": "Every expense report must be approved by the employee's line manager.",
+    "topic": "Expense report approval level 1",
+    "matched_rule_id": "R-007",
+    "value": "line_manager",
+    "unit": "role",
+    "match_confidence": "high",
+    "source_type": "policy"
+  },
+  {
+    "policy_source": "11.2",
+    "quote": "Any expense report with a total above INR 50,000 requires a second approval by the Finance Controller before payment.",
+    "topic": "Finance Controller approval threshold",
+    "matched_rule_id": "R-008",
+    "value": "50000",
+    "unit": "INR/report",
+    "match_confidence": "high",
+    "source_type": "policy"
+  }
+]
