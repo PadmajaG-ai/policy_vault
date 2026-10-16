@@ -1,30 +1,99 @@
 # Policy Vault
 
-Captures the reasons behind enterprise system configuration before experts leave, and detects where written policy and live configuration have drifted apart.
+**Captures the reasons behind enterprise system configuration before experts leave, and detects where written policy and live configuration have drifted apart.**
 
-## Folder layout
+Other tools search what was written down. Policy Vault captures what was never written, and checks the policy against what the system actually does.
+
+Live demo: https://policy-vault-240640518337.asia-south1.run.app
+
+## The problem
+
+Expense, procurement and finance systems are configured over years by a few experts. When they leave:
+- nobody knows **why** a rule, approval step or hidden field exists, so teams are afraid to change anything;
+- the **written policy and the live configuration quietly disagree**, which leaks money and breaks controls that auditors were told exist.
+
+## What it does
+
+| Step | What happens | Who does what |
+|---|---|---|
+| **1. Drift detection** | Reads the policy PDF, compares every rule with the configuration export, and finds the root cause of each mismatch in the ticket history | Gemini reads the policy · **Python compares the values** · Gemini links tickets |
+| **2. Gap finder + expert interview** | Finds rules nobody can explain, then interviews the expert with evidence ("The field was hidden 3 days after TKT-1135 reported ERP posting failures. Related?") | Code finds gaps and date clues · Vertex AI Search finds related tickets · Gemini asks and structures the answer |
+| **3. Decision Records** | The expert's answer becomes a verified record: what, why, who, when, sources, risk if removed | Human verifies · Firestore stores · Vertex AI Search indexes |
+| **4. Ask why** | "Can I re-enable this field?" is answered with citations to tickets, policy and Decision Records | Gemini grounded on Vertex AI Search |
+
+## Results on the demo data (measured against a hidden answer key)
+
+| Metric | Result |
+|---|---|
+| Planted drifts detected | **4 / 4** |
+| False alarms | **0** (8 / 8 aligned rules confirmed) |
+| Root causes found in tickets | **4 / 4** (3 tickets found, 1 correctly reported as "no record, ask the expert") |
+| Retrieval (Vertex AI Search) | 3 / 3 expected tickets ranked first |
+| Ask Why test questions | correct on all 4, including a trap question with no evidence |
+
+The answer key (`data/expense/ground_truth.json`) is read only by `tools/evaluate.py` and never reaches a prompt.
+
+## Architecture
 
 ```
-policy-vault/
-├── DEMO_SCRIPT.md            ← the 3-minute demo; build only what it needs
-├── data/expense/             ← domain pack #1 (synthetic, fictional company)
-│   ├── policy.pdf / .md      ← Travel & Expense Policy v3.2 (the "written truth")
-│   ├── config_rules.csv      ← configuration export in the generic rule shape
-│   ├── tickets.json          ← 13 tickets: 5 explain rules, 8 are noise or vague
-│   ├── expert_answers.json   ← simulated retired expert for the interview demo
-│   └── ground_truth.json     ← ANSWER KEY — never give this to the agents
-└── tools/check_data.py       ← verifies the answer key matches the data
+Browser ──► Cloud Run (Flask, one service)
+              ├─ extract.py   Gemini reads policy.pdf → rules in the generic rule shape
+              ├─ drift.py     deterministic comparison + Gemini root cause from tickets
+              ├─ gaps.py      gap finder, interview question, Decision Record draft
+              ├─ records.py   Decision Records
+              └─ ask_why.py   grounded answers with sources
+                    │
+     ┌──────────────┼───────────────────┬──────────────────┐
+  Gemini on      Vertex AI Search     Firestore          Cloud Storage
+  Vertex AI      (policy, tickets,    (Decision          (search corpus)
+                  Decision Records)    Records)
 ```
 
-## Generic rule shape (keep this — it is what makes new domain packs possible)
+## Design decisions
 
-`rule_id, domain, entity, attribute, condition, value, unit, config_location, last_changed, changed_by`
+1. **AI reads, code compares.** Gemini turns policy text into structured rules; plain Python compares values (including Indian digit grouping like `1,00,000` and unit checks). An LLM can mis-compare numbers; code can't, and an auditor can read an `if` statement.
+2. **No anchoring.** Gemini sees the configuration's rule *slots* but never its *values*, so the policy value it extracts can only come from the policy.
+3. **The model can only cite what exists.** Rule IDs and ticket IDs are enums in the JSON schema, and every answer is validated again in code. Ask Why sources come from grounding metadata, not from the model's text.
+4. **"I don't know" is a valid answer.** Every step has an explicit no-evidence path ("No record found, ask the expert"), and tests include trap questions.
+5. **Generic rule shape.** `rule_id, domain, entity, attribute, condition, value, unit, config_location, last_changed, changed_by`. Nothing expense-specific is hardcoded, so a new domain (inventory, procurement) is a new data pack.
+6. **Demo never breaks.** Search has a timeout, the interview falls back to date-based clues, records fall back to a local file, and a failed live scan shows the last saved scan.
 
-The inventory pack later uses the same columns with `domain=inventory`.
+## Run it locally
 
-## What is planted in the data
+```bash
+python -m venv .venv && .venv\Scripts\activate
+pip install -r requirements.txt
+gcloud auth application-default login
+copy .env.example .env          # set project, model and data store ID
+python main.py                  # http://localhost:8080
+```
 
-- 4 drifts between policy and configuration (D1–D4), 3 with a root cause hidden in tickets, 1 with none
-- 8 aligned rules (for proving zero false alarms)
-- 3 undocumented rules (U1–U3); U3 has a vague related incident (TKT-1135) the agent should connect
-- 2 rules documented only in tickets (for the ask-why feature)
+Command-line tools:
+
+```bash
+python drift.py data/expense    # full scan → output/drift_report.json
+python tools/evaluate.py        # score against the answer key
+python tools/test_search.py     # retrieval check
+python tools/test_ask_why.py    # Ask Why checks, including a trap question
+```
+
+## Data
+
+All data is synthetic. Kestrel Components Pvt Ltd and every person in it are fictional.
+
+```
+data/expense/
+├── policy.pdf / policy.md   Travel & Expense Policy v3.2
+├── config_rules.csv         configuration export (17 rules)
+├── tickets.json             13 tickets: some explain rules, most are noise
+├── expert_answers.json      the simulated retired expert (a human role in the demo)
+└── ground_truth.json        answer key, evaluation only
+```
+
+## Beyond the hackathon
+
+- More domain packs: inventory, procurement (Ariba-style), finance, sales discounts
+- Real connectors: SAP Concur, SAP Ariba, S/4HANA configuration APIs; ServiceNow/Jira tickets
+- Continuous monitoring: re-scan on every policy or configuration change
+- Change impact check: warn which Decision Records a planned change touches
+- An SAP BTP version (AI Core / Generative AI Hub, Joule) as a knowledge-retention layer for S/4HANA migrations
