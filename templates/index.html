@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#18202b; --muted:#5d6b7c; --line:#e3e7ec;
+  --brand:#1f4fd1; --brand-soft:#e8eefc; --red:#c2352b; --red-soft:#fdecea;
+  --green:#1d7a46; --green-soft:#e6f4ec; --amber:#a86400; --amber-soft:#fdf3e1;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif}
+header{background:#101a2e;color:#fff;padding:28px 16px 24px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header h1{margin:0;font-size:26px;letter-spacing:-.3px}
+header p{margin:6px 0 0;color:#b9c4d6;max-width:720px}
+.handover{margin-top:18px;background:#1a2742;border-left:3px solid #f0b429;padding:12px 14px;border-radius:6px;font-size:14px;color:#dbe3f0}
+.handover b{color:#fff}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;margin:20px 0}
+h2{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:10px}
+.step{background:var(--brand);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-grid;place-items:center;font-size:13px}
+.sub{color:var(--muted);margin:0 0 14px}
+button{font:inherit;font-weight:600;border:0;border-radius:7px;padding:9px 16px;cursor:pointer;background:var(--brand);color:#fff}
+button.secondary{background:var(--brand-soft);color:var(--brand)}
+button.ghost{background:none;color:var(--muted);font-weight:500;padding:4px 8px}
+button:disabled{opacity:.55;cursor:wait}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.tile{border:1px solid var(--line);border-radius:8px;padding:12px}
+.tile .n{font-size:28px;font-weight:700}
+.tile.red .n{color:var(--red)} .tile.green .n{color:var(--green)}
+.tile .l{color:var(--muted);font-size:13px}
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line);padding:8px}
+.table td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:top}
+.scroll{overflow-x:auto}
+.val{font-weight:600;white-space:nowrap}
+.val.bad{color:var(--red)}
+.chip{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:99px;padding:1px 9px;font-size:12px;font-weight:600;margin:2px 4px 2px 0;white-space:nowrap}
+.chip.amber{background:var(--amber-soft);color:var(--amber)}
+.chip.green{background:var(--green-soft);color:var(--green)}
+.chip.red{background:var(--red-soft);color:var(--red)}
+.ask-expert{color:var(--amber);font-weight:600}
+.muted{color:var(--muted);font-size:13px}
+.gaps{display:grid;gap:10px}
+.gap{border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.panel{border:1px solid var(--line);background:#fafbfc;border-radius:8px;padding:16px;margin-top:14px}
+.vault-says{background:var(--brand-soft);border-radius:8px;padding:12px 14px;margin:8px 0}
+.vault-says b{color:var(--brand)}
+textarea,input[type=text]{width:100%;font:inherit;border:1px solid var(--line);border-radius:7px;padding:10px;background:#fff;color:var(--ink)}
+textarea{min-height:110px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.record{border:1px solid var(--line);border-left:4px solid var(--green);border-radius:8px;padding:14px;background:#fff;margin-top:10px}
+.record dl{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;margin:8px 0 0}
+.record dt{color:var(--muted);font-size:13px}
+.record dd{margin:0}
+.answer{border-left:4px solid var(--brand);background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;margin-top:12px}
+.err{color:var(--red);font-size:14px;margin-top:8px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes s{to{transform:rotate(360deg)}}
+details summary{cursor:pointer;color:var(--muted);margin-top:10px}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 16px 40px}
+@media (max-width:640px){.record dl{grid-template-columns:1fr}.table th:nth-child(6),.table td:nth-child(6){display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Policy Vault</h1>
+  <p>Captures the reasons behind enterprise system configuration before experts leave, and detects where written policy and live configuration disagree.</p>
+  {% if handover %}
+  <div class="handover"><b>{{ handover.ticket_id }} · {{ handover.title }}</b><br>{{ handover.description }} {{ handover.resolution }}</div>
+  {% endif %}
+</div></header>
+
+<main class="wrap">
+
+<section id="scan">
+  <h2><span class="step">1</span>Drift detection</h2>
+  <p class="sub">Gemini reads the policy PDF, code compares it with the configuration export, and Gemini finds the root cause in the ticket history.</p>
+  <button id="scanBtn" onclick="runScan()">Scan policy vs configuration</button>
+  <div id="scanOut"></div>
+</section>
+
+<section id="interview">
+  <h2><span class="step">2</span>Gap finder &amp; expert interview</h2>
+  <p class="sub">Rules nobody can explain: no policy section, no ticket. The Vault interviews {{ expert.name }} using clues from the ticket history.</p>
+  <div id="gapsOut" class="muted">Run a scan first.</div>
+  <div id="interviewOut"></div>
+</section>
+
+<section id="records">
+  <h2><span class="step">3</span>Decision Records</h2>
+  <p class="sub">Verified knowledge that never existed in writing. Stored in Firestore and indexed in Vertex AI Search.</p>
+  <div id="recordsOut" class="muted">No records yet.</div>
+</section>
+
+<section id="ask">
+  <h2><span class="step">4</span>Ask why</h2>
+  <p class="sub">Ask before you change something. Answers cite the tickets, policy and Decision Records they rely on.</p>
+  <input type="text" id="q" value="Can I show the vehicle registration field again? Fleet management wants it.">
+  <div class="row"><button id="askBtn" onclick="ask()">Ask the Vault</button></div>
+  <div id="askOut"></div>
+</section>
+
+</main>
+<footer>Synthetic data · Kestrel Components Pvt Ltd is fictional · Gemini on Vertex AI · Vertex AI Search · Firestore · Cloud Run
+  <br><button class="ghost" onclick="resetDemo()">Reset demo records</button></footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>");
+
+function fmt(v, unit) {
+  const n = Number(v);
+  if (unit && unit.startsWith("INR") && !isNaN(n)) return "₹" + n.toLocaleString("en-IN") + unit.slice(3);
+  if (unit && unit.startsWith("USD") && !isNaN(n)) return "$" + n + unit.slice(3);
+  return v + (["boolean","role","class","visibility","action"].includes(unit) ? "" : " " + (unit || ""));
+}
+function sourceLabel(s) {
+  const m = String(s).match(/(TKT-\d+|DR-\d+)/); if (m) return m[1];
+  if (/policy/i.test(s)) return "Policy";
+  return String(s).split("/").pop();
+}
+async function api(method, url, body) {
+  const r = await fetch(url, {method, headers: {"Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined});
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || r.statusText);
+  return data;
+}
+function busy(btn, label) { btn.disabled = true; btn.dataset.l = btn.innerHTML; btn.innerHTML = `<span class="spin"></span>${label}`; }
+function done(btn) { btn.disabled = false; btn.innerHTML = btn.dataset.l; }
+
+async function runScan() {
+  const btn = $("scanBtn"); busy(btn, "Reading policy, comparing, checking tickets…");
+  try { renderReport(await api("POST", "/api/scan")); loadGaps(); }
+  catch (e) { $("scanOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  done(btn);
+}
+
+function renderReport(r) {
+  const s = r.summary, drifts = r.findings.filter(f => f.status === "drift");
+  const aligned = r.findings.filter(f => f.status === "aligned");
+  const review = r.findings.filter(f => f.status === "needs_review");
+  let h = `<div class="tiles">
+    <div class="tile"><div class="n">${s.checked}</div><div class="l">policy rules checked</div></div>
+    <div class="tile red"><div class="n">${s.drifts}</div><div class="l">drifts found</div></div>
+    <div class="tile green"><div class="n">${s.aligned}</div><div class="l">aligned</div></div>
+    <div class="tile"><div class="n">${drifts.filter(d => d.root_cause_found).length}/${s.drifts}</div><div class="l">root causes found in tickets</div></div>
+  </div>`;
+  if (r.mode === "saved") h += `<p class="muted">Live scan unavailable; showing the last saved scan.</p>`;
+  h += `<div class="scroll"><table class="table"><tr><th>Rule</th><th>Finding</th><th>Policy says</th><th>System does</th><th>Why (found by the Vault)</th><th>Risk</th></tr>`;
+  for (const d of drifts) {
+    const why = d.root_cause_found
+      ? `${esc(d.root_cause)}<br>${d.root_cause_sources.map(t => `<span class="chip">${esc(t)}</span>`).join("")}`
+      : `<span class="ask-expert">No record found → ask the expert</span>`;
+    h += `<tr><td><b>${esc(d.rule_id)}</b></td>
+      <td>${esc(d.topic)}<br><span class="muted">${esc(d.policy_source)}: “${esc(d.policy_quote)}”</span></td>
+      <td class="val">${esc(fmt(d.policy_value, d.unit))}</td>
+      <td class="val bad">${esc(fmt(d.config_value, d.unit))}<br><span class="muted">${esc(d.last_changed)} · ${esc(d.changed_by)}</span></td>
+      <td>${why}</td><td class="muted">${esc(d.business_risk)}</td></tr>`;
+  }
+  h += `</table></div>`;
+  if (review.length) h += `<p class="muted">Needs review: ${review.map(f => `<span class="chip amber">${esc(f.rule_id)}</span> ${esc(f.reason)}`).join(" ")}</p>`;
+  h += `<details><summary>${aligned.length} aligned rules (no false alarms)</summary><p>${aligned.map(f =>
+        `<span class="chip green">${esc(f.rule_id)} ${esc(f.topic)}</span>`).join("")}</p></details>`;
+  if (r.policy_only.length) h += `<details><summary>${r.policy_only.length} policy rules the system does not enforce</summary><p>${r.policy_only.map(p =>
+        `<span class="chip amber">§${esc(p.policy_source)} ${esc(p.topic)}</span>`).join("")}</p></details>`;
+  $("scanOut").innerHTML = h;
+}
+
+let current = null;
+async function loadGaps() {
+  try {
+    const gaps = await api("GET", "/api/gaps");
+    $("gapsOut").className = "gaps";
+    $("gapsOut").innerHTML = gaps.map(g => `<div class="gap"><div><b>${esc(g.rule_id)}</b>
+        <span class="chip ${g.kind === "undocumented" ? "" : "red"}">${esc(g.kind)}</span><br>
+        <span class="muted">${esc(g.summary)}</span></div>
+        ${g.recorded ? `<span class="chip green">✓ Decision Record saved</span>`
+                     : `<button class="secondary" onclick="startInterview('${esc(g.rule_id)}', this)">Interview expert</button>`}</div>`).join("");
+  } catch (e) { $("gapsOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+async function startInterview(ruleId, btn) {
+  busy(btn, "Looking for clues…");
+  try {
+    const q = await api("POST", "/api/interview/question", {rule_id: ruleId});
+    current = {rule_id: ruleId, question: q.question, cited_tickets: q.cited_tickets};
+    const clues = q.clues.map(c => `<span class="chip ${q.cited_tickets.includes(c.ticket_id) ? "" : "amber"}" title="${esc(c.title)}">${esc(c.ticket_id)} · ${esc(c.clue)}</span>`).join("");
+    $("interviewOut").innerHTML = `<div class="panel">
+      <div class="muted">Interview about <b>${esc(ruleId)}</b>${clues ? " · clues: " + clues : " · no clues in the ticket history"}</div>
+      <div class="vault-says"><b>Vault:</b> ${esc(q.question)}</div>
+      <label class="muted" for="ans">{{ expert.name }}'s answer</label>
+      <textarea id="ans" placeholder="The expert types their answer here…"></textarea>
+      <div class="row"><button class="secondary" onclick="playExpert()">Use {{ expert.name }}'s recorded answer</button>
+      <button id="draftBtn" onclick="draftRecord()">Create Decision Record</button></div>
+      <div id="draftOut"></div></div>`;
+    $("interviewOut").scrollIntoView({behavior: "smooth", block: "start"});
+  } catch (e) { $("interviewOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  done(btn);
+}
+
+async function playExpert() {
+  const a = await api("GET", "/api/interview/expert_answer/" + current.rule_id);
+  $("ans").value = a.answer;
+}
+
+function recordHTML(r, actions) {
+  const risk = {high: "red", medium: "amber", low: "green", none: "green"}[r.risk_if_removed] || "amber";
+  return `<div class="record"><b>${esc(r.record_id || "Draft")} · ${esc(r.rule_id)}</b>
+    ${r.verified_by_expert ? `<span class="chip green">✓ verified by expert</span>` : `<span class="chip amber">awaiting verification</span>`}
+    <dl><dt>What</dt><dd>${esc(r.what)}</dd><dt>Why</dt><dd>${esc(r.why)}</dd>
+    <dt>Decided by</dt><dd>${esc(r.decided_by)}</dd><dt>Decided on</dt><dd>${esc(r.decided_on)}</dd>
+    <dt>Risk if removed</dt><dd><span class="chip ${risk}">${esc(r.risk_if_removed).toUpperCase()}</span> ${esc(r.risk_note)}</dd>
+    <dt>Sources</dt><dd>${r.sources.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</dd></dl>${actions || ""}</div>`;
+}
+
+async function draftRecord() {
+  const answer = $("ans").value.trim(); if (!answer) return;
+  const btn = $("draftBtn"); busy(btn, "Structuring the answer…");
+  try {
+    current.draft = await api("POST", "/api/interview/draft", {...current, answer});
+    $("draftOut").innerHTML = recordHTML(current.draft,
+      `<div class="row"><button onclick="saveRecord(this)">Verify &amp; save</button></div>`);
+  } catch (e) { $("draftOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  done(btn);
+}
+
+async function saveRecord(btn) {
+  busy(btn, "Saving…");
+  try {
+    const r = await api("POST", "/api/records", current.draft);
+    $("interviewOut").innerHTML = recordHTML(r);
+    loadRecords(); loadGaps();
+  } catch (e) { done(btn); alert(e.message); }
+}
+
+async function loadRecords() {
+  const {records, backend} = await api("GET", "/api/records");
+  $("recordsOut").className = "";
+  $("recordsOut").innerHTML = records.length
+    ? records.map(r => recordHTML(r)).join("") + `<p class="muted">Storage: ${backend === "firestore" ? "Firestore" : "local file (Firestore unavailable)"}</p>`
+    : `<span class="muted">No records yet. Interview the expert in step 2.</span>`;
+}
+
+async function ask() {
+  const btn = $("askBtn"); busy(btn, "Searching tickets, policy and records…");
+  try {
+    const r = await api("POST", "/api/ask", {question: $("q").value});
+    $("askOut").innerHTML = `<div class="answer">${md(r.answer)}
+      <p class="muted">Sources: ${r.sources.length ? r.sources.map(s => `<span class="chip">${esc(sourceLabel(s))}</span>`).join("") : "none"}</p></div>`;
+  } catch (e) { $("askOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  done(btn);
+}
+
+async function resetDemo() {
+  if (!confirm("Delete all Decision Records for a fresh demo?")) return;
+  await api("DELETE", "/api/records"); $("interviewOut").innerHTML = ""; loadRecords(); loadGaps();
+}
+
+loadRecords();
+</script>
+</body>
+</html>

@@ -3,3 +3,4 @@ gunicorn
 google-genai
 python-dotenv
 google-cloud-discoveryengine
+google-cloud-firestore

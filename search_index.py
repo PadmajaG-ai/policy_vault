@@ -35,6 +35,7 @@ def upsert_document(doc_id, data, mime_type="text/plain"):
 def search(query, page_size=5):
     """Return the source links of the most relevant documents for a question."""
     response = de.SearchServiceClient().search(
-        de.SearchRequest(serving_config=SERVING_CONFIG, query=query, page_size=page_size)
+        de.SearchRequest(serving_config=SERVING_CONFIG, query=query, page_size=page_size),
+        timeout=10,
     )
     return [r.document.derived_struct_data.get("link", r.document.id) for r in response.results]
