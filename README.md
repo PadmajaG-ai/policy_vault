@@ -68,6 +68,13 @@ copy .env.example .env          # set project, model and data store ID
 python main.py                  # http://localhost:8080
 ```
 
+Tests:
+
+```bash
+pytest                 # 64 offline tests: comparison logic, guard-rails, app flow, hygiene (no cloud calls)
+pytest -m live -v      # 9 live end-to-end checks against Gemini + Vertex AI Search (proves the demo claims)
+```
+
 Command-line tools:
 
 ```bash

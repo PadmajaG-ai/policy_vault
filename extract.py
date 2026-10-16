@@ -71,7 +71,7 @@ For each policy rule:
 - Set matched_rule_id to the slot that governs exactly the same thing under the same condition.
 - If no slot governs it, use "{NO_MATCH}". Do not force a rule onto a slot that is only similar.
 - Take the value ONLY from the policy text. Write it in the slot's form: a plain number
-  (2500, not "INR 2,500"; 100000, not "1,00,000"), true/false, or a lowercase snake_case word.
+  (1250, not "INR 1,250"; 300000, not "3,00,000"), true/false, or a lowercase snake_case word.
 - Write the unit in the slot's notation.
 - Quote the policy sentence exactly and give its section number.
 - Use match_confidence "low" when you are unsure the slot is the same rule.
