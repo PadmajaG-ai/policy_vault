@@ -1,0 +1,6 @@
+Ticket TKT-2089 (incident), created 2024-01-08 by pune.plant
+Title: Inter-plant transfer stuck in transit
+
+Description: Transfer from Pune to Hosur shows in transit for 9 days after physical receipt.
+
+Resolution: Goods receipt posted at Hosur. Resolved.

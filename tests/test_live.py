@@ -77,3 +77,36 @@ def test_ask_why_admits_when_there_is_no_rationale():
     from ask_why import ask_why, NO_RATIONALE
     r = ask_why("Why was the international meal limit set at USD 75?", [])
     assert NO_RATIONALE.lower().rstrip(".") in r["answer"].lower()
+
+
+# ---- domain pack #2: inventory, same engine ----
+
+@pytest.fixture(scope="module")
+def inv_live():
+    import drift
+    truth = json.load(open("data/inventory/ground_truth.json", encoding="utf-8"))
+    return drift.scan("data/inventory", cached=False), truth
+
+
+def test_inventory_drifts_zero_false_alarms(inv_live):
+    report, truth = inv_live
+    drifts = {f["rule_id"] for f in report["findings"] if f["status"] == "drift"}
+    aligned = {f["rule_id"] for f in report["findings"] if f["status"] == "aligned"}
+    assert drifts == {d["rule_id"] for d in truth["drifts"]}
+    assert aligned == set(truth["aligned_rules"])
+
+
+def test_inventory_root_causes(inv_live):
+    report, truth = inv_live
+    by_rule = {f["rule_id"]: f for f in report["findings"]}
+    for d in truth["drifts"]:
+        assert set(by_rule[d["rule_id"]]["root_cause_sources"]) == set(re.findall(r"TKT-\d+", d["root_cause"])), d["rule_id"]
+
+
+def test_inventory_interview_connects_inv010_to_tkt2058():
+    import csv
+    import gaps
+    rules = {r["rule_id"]: r for r in csv.DictReader(open("data/inventory/config_rules.csv", encoding="utf-8"))}
+    tickets = json.load(open("data/inventory/tickets.json", encoding="utf-8"))
+    q = gaps.interview_question(rules["INV-010"], {"kind": "undocumented", "summary": "MAT-7730 excluded from auto reorder"}, tickets, "Deepa M.")
+    assert "TKT-2058" in q["cited_tickets"] and "TKT-2058" in q["question"]

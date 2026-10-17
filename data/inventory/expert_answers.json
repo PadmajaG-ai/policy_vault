@@ -1,0 +1,38 @@
+{
+  "_note": "Simulated retired expert used to demo the interview agent. In the demo you can type these answers live, or the app can play them back.",
+  "expert": {
+    "name": "Deepa M.",
+    "role": "Inventory and MRP configuration lead, 2019-2026 (retired 31-Jan-2026)",
+    "note": "Fictional person"
+  },
+  "answers": [
+    {
+      "ref": "EXP-I1",
+      "rule_id": "INV-010",
+      "question_hint": "Why is MAT-7730 excluded from automatic reorder?",
+      "answer": "Yes, that is related. MAT-7730 is a speciality alloy and the supplier put it on allocation in 2022. They only accept scheduled call-offs, and every automatic purchase order they reject costs us a cancellation penalty under the contract. After the rejections in June 2022 I excluded it from auto-reorder so the planner raises call-offs by hand. Do not switch it back unless procurement renegotiates the contract, otherwise the penalties start again.",
+      "decided_by": "deepa.m with Procurement",
+      "decided_on": "2022-06-24",
+      "risk_if_removed": "high, supplier penalties on every rejected order",
+      "linked_ticket": "TKT-2058"
+    },
+    {
+      "ref": "EXP-I2",
+      "rule_id": "INV-011",
+      "question_hint": "Why is negative stock allowed in storage location SL-09?",
+      "answer": "SL-09 is the customer returns bay at Hosur. Returned goods are often re-shipped before the returns paperwork is posted, and without negative stock the system blocked those shipments. I allowed negative stock only for SL-09 in August 2020 as a workaround. Stores reconcile it every Friday. If you remove it, re-shipments from the returns bay will block until the returns process is fixed.",
+      "decided_by": "deepa.m with Hosur stores",
+      "decided_on": "2020-08-19",
+      "risk_if_removed": "medium, returns re-shipments will block"
+    },
+    {
+      "ref": "EXP-ID2",
+      "rule_id": "INV-003",
+      "question_hint": "Why is the slow-moving threshold 365 days when policy says 180?",
+      "answer": "In November 2020 the plants had been running at half capacity for months, so almost everything looked slow-moving at 180 days. Planners were getting lists of three thousand items and ignoring them. I moved it to 365 days to make the list usable during COVID. It was meant to go back to 180 once volumes recovered. Nobody asked, so it stayed.",
+      "decided_by": "deepa.m (no ticket)",
+      "decided_on": "2020-11",
+      "risk_if_removed": "none; reverting to 180 restores policy compliance"
+    }
+  ]
+}

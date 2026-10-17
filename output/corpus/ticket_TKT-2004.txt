@@ -1,0 +1,6 @@
+Ticket TKT-2004 (incident), created 2019-06-12 by hosur.warehouse
+Title: Barcode scanners not syncing at Hosur warehouse
+
+Description: Handheld scanners lose connection to the ERP every few minutes after the go-live.
+
+Resolution: Wi-Fi access points reconfigured. Resolved.

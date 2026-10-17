@@ -1,0 +1,13 @@
+rule_id,domain,entity,attribute,condition,value,unit,config_location,last_changed,changed_by
+INV-001,inventory,safety_stock,days_of_cover,material_class=A,30,days,Planning > MRP Profiles > Safety Stock,2021-04-07,neha
+INV-002,inventory,safety_stock,days_of_cover,material_class=B,10,days,Planning > MRP Profiles > Safety Stock,2019-06-01,deepa.m
+INV-003,inventory,slow_moving,review_after_no_movement,all_materials,365,days,Reports > Slow-Moving Analysis > Threshold,2020-11-30,deepa.m
+INV-004,inventory,cycle_count,frequency,material_class=A,90,days,Warehouse > Cycle Counting > Intervals,2019-06-01,deepa.m
+INV-005,inventory,write_off,plant_controller_approval_above,per_document,100000,INR/document,Workflows > Write-off Approval > Step 1,2022-04-04,deepa.m
+INV-006,inventory,purchase_order,auto_reorder_enabled,material_class=C,true,boolean,Planning > Replenishment > Auto Reorder,2019-06-01,deepa.m
+INV-007,inventory,goods_receipt,min_remaining_shelf_life,perishable_materials,60,percent,Receiving > Quality Checks > Shelf Life,2024-10-03,rohit
+INV-008,inventory,goods_receipt,over_delivery_tolerance,all_materials,5,percent,Receiving > Tolerances > Over-delivery,2019-06-01,deepa.m
+INV-009,inventory,stock_transfer,approver,inter_plant,plant_manager,role,Workflows > Stock Transfer > Approval,2019-06-01,deepa.m
+INV-010,inventory,purchase_order,auto_reorder_excluded,material=MAT-7730,true,boolean,Planning > Replenishment > Exclusions,2022-06-24,deepa.m
+INV-011,inventory,inventory_posting,negative_stock_allowed,storage_location=SL-09,true,boolean,Inventory > Posting Rules > Negative Stock,2020-08-19,deepa.m
+INV-012,inventory,quality_inspection,skip_incoming_inspection,supplier=SUP-118,true,boolean,Quality > Inspection Rules > Skip Lots,2023-02-20,rohit

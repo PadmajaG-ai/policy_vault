@@ -1,0 +1,6 @@
+Ticket TKT-2017 (incident), created 2020-03-02 by finance.reporting
+Title: Month-end stock valuation report times out
+
+Description: Stock valuation report takes over two hours at month-end.
+
+Resolution: Report scheduled overnight. Resolved.

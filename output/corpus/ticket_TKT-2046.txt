@@ -1,0 +1,6 @@
+Ticket TKT-2046 (incident), created 2021-12-10 by helpdesk
+Title: Cycle count app crashes on older tablets
+
+Description: Counting app closes when scanning more than 200 items in one session.
+
+Resolution: App update 3.2 fixed the memory issue.

@@ -1,0 +1,92 @@
+[
+  {
+    "ticket_id": "TKT-2004",
+    "created": "2019-06-12",
+    "raised_by": "hosur.warehouse",
+    "type": "incident",
+    "title": "Barcode scanners not syncing at Hosur warehouse",
+    "description": "Handheld scanners lose connection to the ERP every few minutes after the go-live.",
+    "resolution": "Wi-Fi access points reconfigured. Resolved.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-2017",
+    "created": "2020-03-02",
+    "raised_by": "finance.reporting",
+    "type": "incident",
+    "title": "Month-end stock valuation report times out",
+    "description": "Stock valuation report takes over two hours at month-end.",
+    "resolution": "Report scheduled overnight. Resolved.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-2031",
+    "created": "2021-04-05",
+    "raised_by": "kiran (Head of Procurement)",
+    "type": "change_request",
+    "title": "Temporary increase of class A safety stock during semiconductor shortage",
+    "description": "Global semiconductor shortage: lead times for class A electronic components have tripled. Request to raise class A safety stock from 15 to 30 days of cover until supply normalises. Review and revert in Q4 2021.",
+    "resolution": "Class A safety stock changed to 30 days on 07-Apr-2021 by neha. Revert review to be scheduled for Q4 2021. Ticket closed.",
+    "related_rules": ["INV-001"]
+  },
+  {
+    "ticket_id": "TKT-2046",
+    "created": "2021-12-10",
+    "raised_by": "helpdesk",
+    "type": "incident",
+    "title": "Cycle count app crashes on older tablets",
+    "description": "Counting app closes when scanning more than 200 items in one session.",
+    "resolution": "App update 3.2 fixed the memory issue.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-2058",
+    "created": "2022-06-20",
+    "raised_by": "procurement.desk",
+    "type": "incident",
+    "title": "Supplier rejected auto-generated purchase orders for MAT-7730",
+    "description": "Supplier SUP-204 rejected 14 automatically created purchase orders for material MAT-7730 in one week. The supplier says the material is on allocation and only accepts scheduled call-offs. Cancelled orders attract a penalty under the supply contract.",
+    "resolution": "Orders cancelled manually. Fixed by inventory configuration team.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-2072",
+    "created": "2023-02-14",
+    "raised_by": "quality.assurance",
+    "type": "change_request",
+    "title": "Skip incoming inspection for certified supplier SUP-118",
+    "description": "SUP-118 has passed the certified supplier programme audit with zero defects for 24 months. Request to skip incoming inspection lots for this supplier; quality will audit them twice a year instead.",
+    "resolution": "Inspection skip configured for SUP-118 on 20-Feb-2023 by rohit.",
+    "related_rules": ["INV-012"]
+  },
+  {
+    "ticket_id": "TKT-2089",
+    "created": "2024-01-08",
+    "raised_by": "pune.plant",
+    "type": "incident",
+    "title": "Inter-plant transfer stuck in transit",
+    "description": "Transfer from Pune to Hosur shows in transit for 9 days after physical receipt.",
+    "resolution": "Goods receipt posted at Hosur. Resolved.",
+    "related_rules": []
+  },
+  {
+    "ticket_id": "TKT-2095",
+    "created": "2024-09-30",
+    "raised_by": "supply.chain.excellence",
+    "type": "change_request",
+    "title": "Inventory Management Policy v2.1 published",
+    "description": "Policy v2.1 introduces a minimum remaining shelf life of 60 percent for perishable materials at receipt. Please configure the receiving check.",
+    "resolution": "Shelf-life check configured on 03-Oct-2024 by rohit.",
+    "related_rules": ["INV-007"]
+  },
+  {
+    "ticket_id": "TKT-2110",
+    "created": "2025-11-24",
+    "raised_by": "hr.ops",
+    "type": "service_request",
+    "title": "Knowledge transfer: Deepa M. retiring 31-Jan-2026",
+    "description": "Deepa M. (inventory and MRP configuration lead since 2019) retires on 31-Jan-2026. Please arrange handover of configuration knowledge to the new admin.",
+    "resolution": "One handover session held. No written documentation produced.",
+    "related_rules": []
+  }
+]

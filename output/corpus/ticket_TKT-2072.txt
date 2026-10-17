@@ -1,0 +1,7 @@
+Ticket TKT-2072 (change_request), created 2023-02-14 by quality.assurance
+Title: Skip incoming inspection for certified supplier SUP-118
+
+Description: SUP-118 has passed the certified supplier programme audit with zero defects for 24 months. Request to skip incoming inspection lots for this supplier; quality will audit them twice a year instead.
+
+Resolution: Inspection skip configured for SUP-118 on 20-Feb-2023 by rohit.
+Related configuration rules: INV-012

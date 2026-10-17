@@ -1,0 +1,36 @@
+{
+  "_note": "ANSWER KEY. Never feed this file to the agents. Use it only in tests/evaluation.",
+  "company": "Kestrel Components Pvt Ltd (fictional)",
+  "drifts": [
+    {
+      "id": "D1",
+      "rule_id": "INV-001",
+      "topic": "Safety stock, class A materials",
+      "policy_value": 15,
+      "config_value": 30,
+      "unit": "days",
+      "direction": "config holds more stock than policy",
+      "root_cause": "Temporary increase during the 2021 semiconductor shortage (TKT-2031) was never reverted.",
+      "business_risk": "Double the class A safety stock ties up working capital across every class A material since 2021."
+    },
+    {
+      "id": "D2",
+      "rule_id": "INV-003",
+      "topic": "Slow-moving review threshold",
+      "policy_value": 180,
+      "config_value": 365,
+      "unit": "days",
+      "direction": "config more lenient than policy",
+      "root_cause": "No ticket. Undocumented change; nobody knows why.",
+      "business_risk": "Stock idle for 6 to 12 months is never reviewed, so obsolete stock builds up unseen."
+    }
+  ],
+  "aligned_rules": ["INV-002", "INV-004", "INV-005", "INV-006", "INV-007", "INV-008", "INV-009"],
+  "documented_by_ticket_only": {
+    "INV-012": "TKT-2072"
+  },
+  "undocumented_rules": [
+    {"id": "U1", "rule_id": "INV-010", "topic": "MAT-7730 excluded from automatic reorder", "expert_answer_ref": "EXP-I1"},
+    {"id": "U2", "rule_id": "INV-011", "topic": "Negative stock allowed in returns bay SL-09", "expert_answer_ref": "EXP-I2"}
+  ]
+}

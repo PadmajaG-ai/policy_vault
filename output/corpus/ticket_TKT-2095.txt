@@ -1,0 +1,7 @@
+Ticket TKT-2095 (change_request), created 2024-09-30 by supply.chain.excellence
+Title: Inventory Management Policy v2.1 published
+
+Description: Policy v2.1 introduces a minimum remaining shelf life of 60 percent for perishable materials at receipt. Please configure the receiving check.
+
+Resolution: Shelf-life check configured on 03-Oct-2024 by rohit.
+Related configuration rules: INV-007

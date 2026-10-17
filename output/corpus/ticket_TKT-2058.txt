@@ -1,0 +1,6 @@
+Ticket TKT-2058 (incident), created 2022-06-20 by procurement.desk
+Title: Supplier rejected auto-generated purchase orders for MAT-7730
+
+Description: Supplier SUP-204 rejected 14 automatically created purchase orders for material MAT-7730 in one week. The supplier says the material is on allocation and only accepts scheduled call-offs. Cancelled orders attract a penalty under the supply contract.
+
+Resolution: Orders cancelled manually. Fixed by inventory configuration team.

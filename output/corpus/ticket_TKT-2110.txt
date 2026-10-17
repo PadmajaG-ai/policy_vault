@@ -1,0 +1,6 @@
+Ticket TKT-2110 (service_request), created 2025-11-24 by hr.ops
+Title: Knowledge transfer: Deepa M. retiring 31-Jan-2026
+
+Description: Deepa M. (inventory and MRP configuration lead since 2019) retires on 31-Jan-2026. Please arrange handover of configuration knowledge to the new admin.
+
+Resolution: One handover session held. No written documentation produced.

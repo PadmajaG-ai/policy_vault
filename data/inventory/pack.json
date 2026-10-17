@@ -1,0 +1,5 @@
+{
+  "label": "Inventory",
+  "system": "inventory and MRP system (ERP-style)",
+  "ask_example": "Can I switch automatic reorder back on for MAT-7730? The planners want fewer manual orders."
+}

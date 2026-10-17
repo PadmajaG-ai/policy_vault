@@ -1,0 +1,7 @@
+Ticket TKT-2031 (change_request), created 2021-04-05 by kiran (Head of Procurement)
+Title: Temporary increase of class A safety stock during semiconductor shortage
+
+Description: Global semiconductor shortage: lead times for class A electronic components have tripled. Request to raise class A safety stock from 15 to 30 days of cover until supply normalises. Review and revert in Q4 2021.
+
+Resolution: Class A safety stock changed to 30 days on 07-Apr-2021 by neha. Revert review to be scheduled for Q4 2021. Ticket closed.
+Related configuration rules: INV-001
