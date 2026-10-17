@@ -16,9 +16,9 @@
 
 ## Scene 2 — Drift detection (0:30–1:30) ⭐ the wow moment
 
-**Action:** Priya uploads three things: the policy PDF, the configuration export, the ticket history. She clicks **Scan**.
+**Action:** the Expense pack is loaded: the policy PDF, the configuration export (17 rules) and the ticket history (13 tickets). Priya clicks **Scan**.
 
-**On screen:** a drift report with 4 findings, each showing policy value vs configured value, the risk, and the evidence.
+**On screen:** three live steps tick off with timings: *Gemini reads the policy PDF* → *Code compares policy values with the live configuration* → *Gemini searches the ticket history for root causes*. Then the drift report with 4 findings, each showing policy value vs configured value, the risk, and the evidence.
 
 | Finding | Policy says | System does | Why (found by the Vault) |
 |---|---|---|---|
@@ -32,9 +32,13 @@
 
 **Also show:** "12 policy rules checked: 4 drifts, 8 aligned." Proof there are no false alarms.
 
+**Click** the meal-limit row: the evidence panel shows the policy sentence (section 5.1), the live configuration (Meals > Limits, changed 12 Mar 2021 by anil) and the full text of TKT-1042 ("Please revert to INR 2,500 after 30 June 2021") side by side.
+
 ## Scene 3 — The expert interview (1:30–2:15)
 
-**On screen:** the Gap Finder lists rules with no explanation anywhere: R-012, R-013, R-014, and drift D2.
+**Before:** Priya asks *"Can I show the vehicle registration field again?"* The Vault answers **"No recorded rationale found."** Nobody knows.
+
+**On screen:** the Gap Finder lists rules with no explanation anywhere: R-012, R-013, R-014, and drift D2. The coverage meter reads **13 of 17 rules have a known reason (76%)**.
 
 **Action:** the Vault interviews R. Kumar about R-014 (vehicle registration field hidden). The key moment is the agent connecting the dots on its own:
 
@@ -42,13 +46,13 @@
 >
 > **R. Kumar:** "Yes. The field overflowed a 10-character field in the ERP interface. I hid it as a quick fix…"
 
-**On screen:** a new **Decision Record** appears: rule, reason, decided by, date, linked ticket, risk if removed = HIGH, verified by expert ✅.
+**On screen:** a new **Decision Record** appears: rule, reason, decided by, date, linked ticket, risk if removed = HIGH, verified by expert ✅. The coverage meter moves to **14 of 17**.
 
 **Voice-over:** "It doesn't just search knowledge. It creates knowledge that never existed in writing."
 
 ## Scene 4 — Ask why (2:15–2:45)
 
-**Action:** Priya types: *"Can I show the vehicle registration field again? Fleet management wants it."*
+**After:** Priya asks the same question again: *"Can I show the vehicle registration field again? Fleet management wants it."*
 
 **Vault answers:** "Not yet. It was hidden in Sept 2021 because it broke ERP posting (TKT-1135). If you re-enable it before the ERP interface mapping is fixed, mileage payments will fail again. Source: interview with R. Kumar, verified."
 
@@ -56,7 +60,9 @@
 
 ## Scene 5 — Close (2:45–3:00)
 
-**(Stretch, only if built)** 15 seconds: switch to the Inventory pack, same engine, catches a safety-stock drift.
+15 seconds: click **Inventory** in the header. Same engine, no code changes, a different domain: Scan finds class A safety stock at 30 days of cover against a policy of 15, traced to a 2021 semiconductor-shortage ticket (TKT-2031) that was never reverted, plus a slow-moving threshold nobody can explain.
+
+**Voice-over:** "Same engine, new domain. Expense today, inventory, procurement and finance tomorrow."
 
 **Closing line:** "Policy Vault: the reasons behind your systems, captured before they walk out the door."
 
@@ -66,5 +72,6 @@
 
 - 4 of 4 planted drifts detected, 0 false alarms across 12 checkable rules (measured against `ground_truth.json`)
 - 3 of 4 root causes found automatically from tickets
-- 4 undocumented decisions turned into verified Decision Records
+- 4 undocumented decisions turned into verified Decision Records; coverage 13 of 17 → 17 of 17
+- Second domain (inventory) on the same engine: 2 of 2 drifts, 0 false alarms across 9 checkable rules (verify with `pytest -m live` before claiming)
 - Time to find a root cause: minutes instead of the "two weeks of emailing former colleagues" it takes today
