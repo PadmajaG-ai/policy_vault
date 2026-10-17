@@ -1,0 +1,5 @@
+{
+  "label": "Expense",
+  "system": "expense system (Concur-style)",
+  "ask_example": "Can I show the vehicle registration field again? Fleet management wants it."
+}

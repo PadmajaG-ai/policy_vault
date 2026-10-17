@@ -62,6 +62,32 @@ textarea{min-height:110px}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes s{to{transform:rotate(360deg)}}
 details summary{cursor:pointer;color:var(--muted);margin-top:10px}
+.packs{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.packs a{color:#b9c4d6;text-decoration:none;border:1px solid #2c3a57;border-radius:99px;padding:3px 12px;font-size:13px;font-weight:600}
+.packs a.on{background:#fff;color:#101a2e;border-color:#fff}
+.steps{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:6px}
+.steps li{display:flex;gap:10px;align-items:baseline;font-size:14px}
+.steps .ic{width:18px;text-align:center;flex:none}
+.steps .ok{color:var(--green);font-weight:700}
+.steps .bad{color:var(--red);font-weight:700}
+.steps .res{color:var(--muted);font-size:13px}
+tr.drift{cursor:pointer}
+tr.drift:hover td{background:#fafbfc}
+.evhint{display:block;color:var(--brand);font-size:12px;font-weight:600;margin-top:4px}
+tr.ev td{background:#fafbfc;padding:0 8px 14px}
+.evgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.evgrid>div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:13.5px}
+.evgrid h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.evgrid blockquote{margin:6px 0 0;padding-left:10px;border-left:3px solid var(--brand);color:var(--ink)}
+.tk+.tk{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.cov{border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:6px}
+.cov .head{font-size:16px;font-weight:600}
+.cov .head b{font-size:22px}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:10px 0 8px;background:var(--line)}
+.bar span{transition:width .6s ease}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.c-policy{background:var(--green)} .c-ticket{background:var(--brand)} .c-decision_record{background:#7a4cc2} .c-unexplained{background:var(--red)}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 16px 40px}
 @media (max-width:640px){.record dl{grid-template-columns:1fr}.table th:nth-child(6),.table td:nth-child(6){display:none}}
 </style>
@@ -70,6 +96,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 16px 40p
 <header><div class="wrap">
   <h1>Policy Vault</h1>
   <p>Captures the reasons behind enterprise system configuration before experts leave, and detects where written policy and live configuration disagree.</p>
+  {% if packs|length > 1 %}<nav class="packs">{% for p in packs %}<a href="/?pack={{ p.name }}" class="{{ 'on' if p.name == pack else '' }}">{{ p.label }}</a>{% endfor %}</nav>{% endif %}
   {% if handover %}
   <div class="handover"><b>{{ handover.ticket_id }} · {{ handover.title }}</b><br>{{ handover.description }} {{ handover.resolution }}</div>
   {% endif %}
@@ -79,8 +106,9 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 16px 40p
 
 <section id="scan">
   <h2><span class="step">1</span>Drift detection</h2>
-  <p class="sub">Gemini reads the policy PDF, code compares it with the configuration export, and Gemini finds the root cause in the ticket history.</p>
+  <p class="sub">{{ meta.label }} pack: the policy PDF, a configuration export of {{ n_rules }} rules and {{ n_tickets }} tickets. Gemini reads, code compares, Gemini finds the root cause.</p>
   <button id="scanBtn" onclick="runScan()">Scan policy vs configuration</button>
+  <ol id="scanSteps" class="steps"></ol>
   <div id="scanOut"></div>
 </section>
 
@@ -94,13 +122,14 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:10px 16px 40p
 <section id="records">
   <h2><span class="step">3</span>Decision Records</h2>
   <p class="sub">Verified knowledge that never existed in writing. Stored in Firestore and indexed in Vertex AI Search.</p>
+  <div id="coverageOut"></div>
   <div id="recordsOut" class="muted">No records yet.</div>
 </section>
 
 <section id="ask">
   <h2><span class="step">4</span>Ask why</h2>
   <p class="sub">Ask before you change something. Answers cite the tickets, policy and Decision Records they rely on.</p>
-  <input type="text" id="q" value="Can I show the vehicle registration field again? Fleet management wants it.">
+  <input type="text" id="q" value="{{ meta.ask_example or '' }}">
   <div class="row"><button id="askBtn" onclick="ask()">Ask the Vault</button></div>
   <div id="askOut"></div>
 </section>
@@ -125,7 +154,10 @@ function sourceLabel(s) {
   if (/policy/i.test(s)) return "Policy";
   return String(s).split("/").pop();
 }
+const PACK = "{{ pack }}";
+let TICKETS = {};
 async function api(method, url, body) {
+  url += (url.includes("?") ? "&" : "?") + "pack=" + encodeURIComponent(PACK);
   const r = await fetch(url, {method, headers: {"Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined});
   const data = await r.json();
   if (!r.ok) throw new Error(data.error || r.statusText);
@@ -134,12 +166,49 @@ async function api(method, url, body) {
 function busy(btn, label) { btn.disabled = true; btn.dataset.l = btn.innerHTML; btn.innerHTML = `<span class="spin"></span>${label}`; }
 function done(btn) { btn.disabled = false; btn.innerHTML = btn.dataset.l; }
 
+const STEPS = [
+  ["extract", "Gemini reads the policy PDF", d => `${d.matched} rules matched to the configuration, ${d.policy_only} policy-only`],
+  ["compare", "Code compares policy values with the live configuration", d => `${d.checked} checked: ${d.drifts} drifts, ${d.aligned} aligned${d.needs_review ? `, ${d.needs_review} need review` : ""}`],
+  ["explain", "Gemini searches the ticket history for root causes", d => { const ds = d.findings.filter(f => f.status === "drift"); return `${ds.filter(f => f.root_cause_found).length} of ${ds.length} drifts explained by a ticket`; }],
+];
+function stepRow(i, state, text, result) {
+  const icon = {run: `<span class="spin"></span>`, ok: `<span class="ok">✓</span>`, bad: `<span class="bad">✕</span>`, wait: `<span class="muted">○</span>`}[state];
+  return `<li id="st${i}"><span class="ic">${icon}</span><span>${esc(text)}${result ? ` <span class="res">· ${esc(result)}</span>` : ""}</span></li>`;
+}
 async function runScan() {
-  const btn = $("scanBtn"); busy(btn, "Reading policy, comparing, checking tickets…");
-  try { renderReport(await api("POST", "/api/scan")); loadGaps(); }
-  catch (e) { $("scanOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  const btn = $("scanBtn"); busy(btn, "Scanning…");
+  $("scanOut").innerHTML = "";
+  $("scanSteps").innerHTML = STEPS.map((s, i) => stepRow(i, "wait", s[1])).join("");
+  let report = null;
+  try {
+    for (const [i, [name, label, summary]] of STEPS.entries()) {
+      $("st" + i).outerHTML = stepRow(i, "run", label);
+      const t0 = performance.now();
+      const d = await api("POST", "/api/scan/" + name);
+      $("st" + i).outerHTML = stepRow(i, "ok", label, `${summary(d)} (${((performance.now() - t0) / 1000).toFixed(1)}s)`);
+      if (name === "explain") report = d;
+    }
+  } catch (e) {
+    $("scanSteps").insertAdjacentHTML("beforeend", `<li><span class="ic"><span class="bad">✕</span></span><span class="res">${esc(e.message)}. Showing the last saved scan.</span></li>`);
+    try { report = await api("GET", "/api/scan/saved"); } catch (e2) { $("scanOut").innerHTML = `<div class="err">${esc(e2.message)}</div>`; }
+  }
+  if (report) { renderReport(report); loadGaps(); loadCoverage(); }
   done(btn);
 }
+
+function evidenceHTML(d) {
+  const tks = d.root_cause_sources.map(id => TICKETS[id]).filter(Boolean);
+  const tkHTML = tks.length ? tks.map(t => `<div class="tk"><b>${esc(t.ticket_id)}</b> · ${esc(t.created)} · ${esc(t.raised_by)}<br>
+      <b>${esc(t.title)}</b><br>${esc(t.description)}<br><span class="muted">Resolution: ${esc(t.resolution)}</span></div>`).join("")
+    : `<span class="ask-expert">No ticket explains this change.</span><br><span class="muted">It goes to the Gap Finder for an expert interview.</span>`;
+  return `<div class="evgrid">
+    <div><h4>Written policy</h4>${esc(d.policy_source)}<blockquote>${esc(d.policy_quote)}</blockquote></div>
+    <div><h4>Live configuration</h4><b>${esc(fmt(d.config_value, d.unit))}</b><br>${esc(d.config_location)}<br>
+      <span class="muted">Last changed ${esc(d.last_changed)} by ${esc(d.changed_by)}</span><br>
+      <span class="muted">Compared by code: ${esc(d.reason)}</span></div>
+    <div><h4>Ticket evidence</h4>${tkHTML}</div></div>`;
+}
+function toggleEv(id) { const el = $("ev-" + id); if (el) el.hidden = !el.hidden; }
 
 function renderReport(r) {
   const s = r.summary, drifts = r.findings.filter(f => f.status === "drift");
@@ -157,11 +226,12 @@ function renderReport(r) {
     const why = d.root_cause_found
       ? `${esc(d.root_cause)}<br>${d.root_cause_sources.map(t => `<span class="chip">${esc(t)}</span>`).join("")}`
       : `<span class="ask-expert">No record found → ask the expert</span>`;
-    h += `<tr><td><b>${esc(d.rule_id)}</b></td>
+    h += `<tr class="drift" onclick="toggleEv('${esc(d.rule_id)}')"><td><b>${esc(d.rule_id)}</b><span class="evhint">Evidence ▾</span></td>
       <td>${esc(d.topic)}<br><span class="muted">${esc(d.policy_source)}: “${esc(d.policy_quote)}”</span></td>
       <td class="val">${esc(fmt(d.policy_value, d.unit))}</td>
       <td class="val bad">${esc(fmt(d.config_value, d.unit))}<br><span class="muted">${esc(d.last_changed)} · ${esc(d.changed_by)}</span></td>
-      <td>${why}</td><td class="muted">${esc(d.business_risk)}</td></tr>`;
+      <td>${why}</td><td class="muted">${esc(d.business_risk)}</td></tr>
+      <tr class="ev" id="ev-${esc(d.rule_id)}" hidden><td colspan="6">${evidenceHTML(d)}</td></tr>`;
   }
   h += `</table></div>`;
   if (review.length) h += `<p class="muted">Needs review: ${review.map(f => `<span class="chip amber">${esc(f.rule_id)}</span> ${esc(f.reason)}`).join(" ")}</p>`;
@@ -235,8 +305,19 @@ async function saveRecord(btn) {
   try {
     const r = await api("POST", "/api/records", current.draft);
     $("interviewOut").innerHTML = recordHTML(r);
-    loadRecords(); loadGaps();
+    loadRecords(); loadGaps(); loadCoverage();
   } catch (e) { done(btn); alert(e.message); }
+}
+
+const COV = [["policy", "explained by the policy"], ["ticket", "explained by a ticket"], ["decision_record", "captured by interview"], ["unexplained", "no known reason"]];
+async function loadCoverage() {
+  try {
+    const c = await api("GET", "/api/coverage");
+    const pct = Math.round(100 * c.explained / c.total);
+    $("coverageOut").innerHTML = `<div class="cov"><div class="head">Knowledge coverage: <b>${c.explained} of ${c.total}</b> configuration rules have a known reason (${pct}%)</div>
+      <div class="bar">${COV.map(([k]) => `<span class="c-${k}" style="width:${100 * c.by_source[k] / c.total}%" title="${c.by_source[k]} ${k}"></span>`).join("")}</div>
+      <div class="legend">${COV.map(([k, label]) => `<span><i class="c-${k}"></i>${c.by_source[k]} ${label}</span>`).join("")}</div></div>`;
+  } catch (e) { $("coverageOut").innerHTML = ""; }
 }
 
 async function loadRecords() {
@@ -258,11 +339,12 @@ async function ask() {
 }
 
 async function resetDemo() {
-  if (!confirm("Delete all Decision Records for a fresh demo?")) return;
-  await api("DELETE", "/api/records"); $("interviewOut").innerHTML = ""; loadRecords(); loadGaps();
+  if (!confirm("Delete this pack's Decision Records for a fresh demo?")) return;
+  await api("DELETE", "/api/records"); $("interviewOut").innerHTML = ""; loadRecords(); loadGaps(); loadCoverage();
 }
 
 loadRecords();
+api("GET", "/api/tickets").then(t => { TICKETS = t; }).catch(() => {});
 </script>
 </body>
 </html>

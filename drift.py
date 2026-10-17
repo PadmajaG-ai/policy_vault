@@ -6,7 +6,7 @@ Steps:
                     Ticket IDs are an enum, so it can only cite tickets that exist.
 
 Usage:  python drift.py data/expense            (re-extracts the policy with Gemini)
-        python drift.py data/expense --cached   (reuses output/policy_rules.json)
+        python drift.py data/expense --cached   (reuses output/expense/policy_rules.json)
 """
 
 import csv
@@ -143,24 +143,32 @@ Tickets:
 
 # ---------- Full scan ----------
 
-def scan(pack_dir, cached=False):
+def out_dir(pack_dir):
+    """Per-pack output folder, e.g. output/expense."""
+    return Path("output") / Path(pack_dir).name
+
+
+def load_pack(pack_dir):
     pack = Path(pack_dir)
     with open(pack / "config_rules.csv", newline="", encoding="utf-8") as f:
         config_rows = list(csv.DictReader(f))
     tickets = json.loads((pack / "tickets.json").read_text(encoding="utf-8"))
+    return config_rows, tickets
 
-    cache = Path("output") / "policy_rules.json"
+
+def extract_step(pack_dir, cached=False):
+    """Step 1: Gemini reads the policy (or the cached extraction for this pack)."""
+    pack, cache = Path(pack_dir), out_dir(pack_dir) / "policy_rules.json"
     if cached and cache.exists():
-        policy_rules = json.loads(cache.read_text(encoding="utf-8"))
-    else:
-        policy_rules, problems = extract_policy_rules(pack / "policy.pdf", pack / "config_rules.csv")
-        for p in problems:
-            print("  extraction problem:", p)
+        return json.loads(cache.read_text(encoding="utf-8"))
+    policy_rules, problems = extract_policy_rules(pack / "policy.pdf", pack / "config_rules.csv")
+    for p in problems:
+        print("  extraction problem:", p)
+    return policy_rules
 
-    findings, policy_only = detect(policy_rules, config_rows)
+
+def build_report(findings, policy_only):
     drifts = [f for f in findings if f["status"] == DRIFT]
-    explain_drifts(drifts, tickets)
-
     return {
         "summary": {
             "checked": len(findings),
@@ -174,10 +182,17 @@ def scan(pack_dir, cached=False):
     }
 
 
+def scan(pack_dir, cached=False):
+    config_rows, tickets = load_pack(pack_dir)
+    findings, policy_only = detect(extract_step(pack_dir, cached), config_rows)
+    explain_drifts([f for f in findings if f["status"] == DRIFT], tickets)
+    return build_report(findings, policy_only)
+
+
 if __name__ == "__main__":
     report = scan(sys.argv[1], cached="--cached" in sys.argv)
-    out = Path("output") / "drift_report.json"
-    out.parent.mkdir(exist_ok=True)
+    out = out_dir(sys.argv[1]) / "drift_report.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
 
     s = report["summary"]

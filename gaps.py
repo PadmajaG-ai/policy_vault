@@ -33,6 +33,29 @@ def find_gaps(report, config_rows, tickets):
     return gaps
 
 
+def coverage(report, config_rows, tickets, records):
+    """Where each config rule's reason comes from: policy, ticket, Decision Record, or nowhere."""
+    findings = {f["rule_id"]: f for f in report["findings"]}
+    in_tickets = {r for t in tickets for r in t["related_rules"]}
+    recorded = {r["rule_id"] for r in records}
+    rules = {}
+    for c in config_rows:
+        rid, f = c["rule_id"], findings.get(c["rule_id"])
+        status = f["status"] if f else None
+        if status == "aligned":
+            rules[rid] = "policy"
+        elif status == "drift" and f.get("root_cause_found"):
+            rules[rid] = "ticket"
+        elif status is None and rid in in_tickets:
+            rules[rid] = "ticket"
+        elif rid in recorded:
+            rules[rid] = "decision_record"
+        else:
+            rules[rid] = "unexplained"
+    counts = {k: sum(v == k for v in rules.values()) for k in ("policy", "ticket", "decision_record", "unexplained")}
+    return {"total": len(rules), "explained": len(rules) - counts["unexplained"], "by_source": counts, "rules": rules}
+
+
 def _days_between(a, b):
     return abs((date.fromisoformat(a) - date.fromisoformat(b)).days)
 

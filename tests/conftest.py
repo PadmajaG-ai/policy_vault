@@ -65,7 +65,7 @@ def policy_rules(truth, rules):
 
 @pytest.fixture
 def saved_report():
-    return json.loads((ROOT / "output" / "drift_report.json").read_text(encoding="utf-8"))
+    return json.loads((ROOT / "output" / "expense" / "drift_report.json").read_text(encoding="utf-8"))
 
 
 @pytest.fixture

@@ -55,7 +55,7 @@ def test_scan_falls_back_to_saved_report(client, monkeypatch):
 
 def test_gaps_need_a_scan(client, monkeypatch):
     import main
-    monkeypatch.setitem(main.state, "report", None)
+    monkeypatch.setitem(main.PACKS["expense"], "report", None)
     assert client.get("/api/gaps").status_code == 400
 
 

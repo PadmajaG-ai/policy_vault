@@ -116,8 +116,8 @@ if __name__ == "__main__":
     pdf, csv_path = sys.argv[1], sys.argv[2]
     rules, problems = extract_policy_rules(pdf, csv_path)
 
-    out = Path("output") / "policy_rules.json"
-    out.parent.mkdir(exist_ok=True)
+    out = Path("output") / Path(pdf).parent.name / "policy_rules.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rules, indent=2, ensure_ascii=False), encoding="utf-8")
 
     matched = [r for r in rules if r["matched_rule_id"] != NO_MATCH]

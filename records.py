@@ -55,7 +55,7 @@ def save_record(record):
     """Assign the next DR-000N id, store it, and index it for search. Returns the record."""
     existing = list_records()
     same_rule = [r for r in existing if r["rule_id"] == record["rule_id"]]
-    record["record_id"] = same_rule[0]["record_id"] if same_rule else f"DR-{len(existing) + 1:04d}"
+    record["record_id"] = same_rule[0]["record_id"] if same_rule else f"DR-{max((int(r['record_id'][3:]) for r in existing), default=0) + 1:04d}"
     record["created_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     if backend == "firestore":
@@ -70,15 +70,16 @@ def save_record(record):
     return record
 
 
-def clear_records():
-    """Reset for a fresh demo run."""
+def clear_records(domain=None):
+    """Reset for a fresh demo run: all records, or only one domain's."""
     if backend == "firestore":
         try:
             for d in _firestore().collection(COLLECTION).stream():
-                d.reference.delete()
+                if domain is None or d.to_dict().get("domain") == domain:
+                    d.reference.delete()
         except Exception as e:
             _fallback(e)
-    _write_local([])
+    _write_local([r for r in _read_local() if domain is not None and r.get("domain") != domain])
 
 
 def _index_for_search(record):
