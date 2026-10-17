@@ -51,7 +51,7 @@
       "policy_quote": "Domestic travel: meals are reimbursed at actual cost up to a maximum of INR 2,500 per person per day.",
       "config_location": "Policies > Expense Types > Meals > Limits",
       "last_changed": "2021-03-12",
-      "changed_by": "a.menon",
+      "changed_by": "anil",
       "root_cause": "The domestic meal limit was temporarily increased for a Q2 sales offsite, but the system was not reverted to the policy value.",
       "root_cause_sources": [
         "TKT-1042"
@@ -147,7 +147,7 @@
       "policy_quote": "Employees using their personal car for business travel are reimbursed at INR 12 per kilometre.",
       "config_location": "Policies > Mileage > Rates",
       "last_changed": "2023-04-01",
-      "changed_by": "s.khan"
+      "changed_by": "sanjay"
     },
     {
       "rule_id": "R-017",
@@ -189,7 +189,7 @@
       "policy_quote": "Any expense report with a total above INR 50,000 requires a second approval by the Finance Controller before payment.",
       "config_location": "Workflows > Approval > Step 2 Condition",
       "last_changed": "2022-08-17",
-      "changed_by": "a.menon",
+      "changed_by": "anil",
       "root_cause": "The Finance Controller approval threshold was increased in the system to reduce the volume of reports requiring approval, with the policy update pending.",
       "root_cause_sources": [
         "TKT-1098"

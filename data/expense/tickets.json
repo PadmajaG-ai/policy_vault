@@ -12,7 +12,7 @@
   {
     "ticket_id": "TKT-1021",
     "created": "2020-01-14",
-    "raised_by": "p.nair (Travel Desk)",
+    "raised_by": "pooja (Travel Desk)",
     "type": "incident",
     "title": "Receipt images not attaching from mobile app",
     "description": "Several users on older Android versions cannot attach photos to expense lines.",
@@ -22,11 +22,11 @@
   {
     "ticket_id": "TKT-1042",
     "created": "2021-03-10",
-    "raised_by": "v.rao (Head of Sales)",
+    "raised_by": "vikram (Head of Sales)",
     "type": "change_request",
     "title": "Temporary increase in domestic meal limit for Q2 sales offsite",
     "description": "Sales team will hold a 3-city offsite in Q2 with client dinners each night. Request to raise the domestic meal daily limit from INR 2,500 to INR 4,000 for the duration of the offsite only (April to June 2021). Please revert to INR 2,500 after 30 June 2021.",
-    "resolution": "Limit changed to INR 4,000 on 12-Mar-2021 by a.menon. Revert reminder to be set for 30-Jun-2021. Ticket closed.",
+    "resolution": "Limit changed to INR 4,000 on 12-Mar-2021 by anil. Revert reminder to be set for 30-Jun-2021. Ticket closed.",
     "related_rules": ["R-001"]
   },
   {
@@ -52,11 +52,11 @@
   {
     "ticket_id": "TKT-1098",
     "created": "2022-08-11",
-    "raised_by": "m.pillai (Finance Controller)",
+    "raised_by": "meera (Finance Controller)",
     "type": "change_request",
     "title": "Reduce volume of reports needing Finance Controller approval",
     "description": "Controller approval queue has over 400 reports a month and is delaying reimbursements by 2 weeks. Proposal: raise the second-approval threshold from INR 50,000 to INR 1,00,000. Policy document will be updated in the next revision to match.",
-    "resolution": "Workflow condition changed to INR 1,00,000 on 17-Aug-2022 by a.menon. Closed pending policy update.",
+    "resolution": "Workflow condition changed to INR 1,00,000 on 17-Aug-2022 by anil. Closed pending policy update.",
     "related_rules": ["R-008"]
   },
   {
@@ -66,7 +66,7 @@
     "type": "change_request",
     "title": "Flag weekend expenses for review",
     "description": "Audit sample found personal weekend dining being claimed as business meals. Request a flag on any transaction dated Saturday or Sunday so approvers check the business purpose.",
-    "resolution": "Audit rule configured on 09-Jan-2023 by s.khan.",
+    "resolution": "Audit rule configured on 09-Jan-2023 by sanjay.",
     "related_rules": ["R-016"]
   },
   {
@@ -86,7 +86,7 @@
     "type": "change_request",
     "title": "Update personal car mileage rate to INR 12/km",
     "description": "Policy v3.1 revises the personal car mileage rate to INR 12 per km effective 1-Apr-2023 due to fuel price increases.",
-    "resolution": "Rate updated on 01-Apr-2023 by s.khan.",
+    "resolution": "Rate updated on 01-Apr-2023 by sanjay.",
     "related_rules": ["R-006"]
   },
   {

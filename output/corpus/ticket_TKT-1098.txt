@@ -1,7 +1,7 @@
-Ticket TKT-1098 (change_request), created 2022-08-11 by m.pillai (Finance Controller)
+Ticket TKT-1098 (change_request), created 2022-08-11 by meera (Finance Controller)
 Title: Reduce volume of reports needing Finance Controller approval
 
 Description: Controller approval queue has over 400 reports a month and is delaying reimbursements by 2 weeks. Proposal: raise the second-approval threshold from INR 50,000 to INR 1,00,000. Policy document will be updated in the next revision to match.
 
-Resolution: Workflow condition changed to INR 1,00,000 on 17-Aug-2022 by a.menon. Closed pending policy update.
+Resolution: Workflow condition changed to INR 1,00,000 on 17-Aug-2022 by anil. Closed pending policy update.
 Related configuration rules: R-008

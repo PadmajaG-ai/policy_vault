@@ -3,5 +3,5 @@ Title: Flag weekend expenses for review
 
 Description: Audit sample found personal weekend dining being claimed as business meals. Request a flag on any transaction dated Saturday or Sunday so approvers check the business purpose.
 
-Resolution: Audit rule configured on 09-Jan-2023 by s.khan.
+Resolution: Audit rule configured on 09-Jan-2023 by sanjay.
 Related configuration rules: R-016
