@@ -171,15 +171,9 @@ Time budget: ~3 hrs weekdays, 5+ hrs weekends. If a milestone slips by a day, cu
 
 ## 12. Status (update every session)
 
-- **Last updated:** 13 Oct 2026
-- **Done:** data pack + demo script; hello-world live on Cloud Run; git repo pushed to GitHub (PadmajaG-ai/policy_vault); `extract.py` (Gemini → policy rules, enum-constrained to config slots, config values hidden; 12/12 matched); `drift.py` comparison (offline: 4 drifts, 8 aligned, 0 false alarms); `tools/evaluate.py` scoring.
-- **Drift score (live):** 4/4 drifts, 0 false alarms, 8/8 aligned, 4/4 root causes.
-- **In progress:** Vertex AI Search data store (bucket + import).
-- **Schedule slipped ~10 days. Re-plan (scope cut):**
-  - 13 Oct: drift + root cause + eval verified; commit.
-  - 14 Oct: Gap Finder + Interviewer (expert replies from `expert_answers.json`) + Decision Records (Firestore) + Ask Why.
-  - 15 Oct: one-page Flask UI (Scan → report → interview → ask), redeploy to Cloud Run.
-  - 16 Oct: demo video, README, architecture diagram, deck. 17 Oct submit. 18 Oct buffer.
-  - **Kept:** Vertex AI Search (data store over tickets + policy + Decision Records; grounds Ask Why). Corpus built by `tools/build_search_corpus.py`.
-  - **Cut:** inventory pack, ADK (plain google-genai SDK instead), Agent Engine, file upload (bundled data pack; upload only if time).
-- **Problems log:** ADC login needed all consent checkboxes ticked; build fell back to Buildpacks because Dockerfile wasn't found (fixed). pip SSL errors → use `pip install --use-feature=truststore`. R-011 `economy_class` vs `economy` would have been a false alarm → token comparison that ignores unit words.
+- **Last updated:** 17 Oct 2026 (submission day)
+- **Done:** extraction, drift + root cause, Vertex AI Search, Ask Why, Gap Finder + interview, Decision Records (Firestore with local fallback), one-page UI, README, test suite.
+- **Verified (17 Oct, gemini-3.5-flash):** `pytest` 64/64 offline; `pytest -m live` 9/9: 4/4 drifts, 0 false alarms, 4/4 root causes, search 3/3, R-014 -> TKT-1135 interview, Ask Why cites DR-0001 and admits no rationale on the USD 75 trap.
+- **Remaining today:** create Firestore DB + Cloud Run IAM (aiplatform.user, discoveryengine.editor, datastore.user); deploy; warm-up run on live URL; demo video; submit.
+- **Cut:** inventory pack, ADK, Agent Engine, file upload.
+- **Problems log:** pip/Python SSL errors -> `pip install --use-feature=truststore`. Console bucket import: project Owner needs explicit `roles/storage.objectViewer`. Extraction prompt example used 100000 (= D4 config value), caught by test and fixed. conftest placeholders overrode .env (live tests hit "test-project"), fixed by loading .env first. R-011 `economy_class` vs `economy` handled by unit-word-insensitive compare.
