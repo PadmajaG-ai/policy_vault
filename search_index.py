@@ -1,7 +1,7 @@
 """Vertex AI Search: the searchable index of company knowledge (policy, tickets, Decision Records).
 
-The data store was created in the console (Layout parser with chunking). This module adds
-documents to it directly with the API, e.g. each new Decision Record after an interview.
+The data store was created in the console (Layout parser with chunking). New documents,
+e.g. each Decision Record after an interview, go in through Cloud Storage + import.
 """
 
 import os
@@ -16,18 +16,25 @@ DATA_STORE = (f"projects/{PROJECT}/locations/global/collections/default_collecti
               f"/dataStores/{os.environ['DATA_STORE_ID']}")
 BRANCH = f"{DATA_STORE}/branches/default_branch"
 SERVING_CONFIG = f"{DATA_STORE}/servingConfigs/default_config"
+BUCKET = os.environ.get("CORPUS_BUCKET", f"{PROJECT}-corpus")
 
 
 def upsert_document(doc_id, data, mime_type="text/plain"):
-    """Add or replace one document. doc_id: letters, digits, '-' and '_' only."""
-    de.DocumentServiceClient().update_document(
-        request=de.UpdateDocumentRequest(
-            document=de.Document(
-                name=f"{BRANCH}/documents/{doc_id}",
-                id=doc_id,
-                content=de.Document.Content(raw_bytes=data, mime_type=mime_type),
-            ),
-            allow_missing=True,
+    """Add or replace one document (e.g. a Decision Record) in the search index.
+
+    The data store uses the layout parser, which rejects raw bytes sent inline
+    ('document.data is required'). So the file goes to Cloud Storage and that one file is
+    imported, the same route as tools/reimport_search.py. Import runs in the background
+    (about a minute); the app does not wait for it.
+    """
+    from google.cloud import storage
+    path = f"records/{doc_id}.txt"
+    storage.Client(project=PROJECT).bucket(BUCKET).blob(path).upload_from_string(data, content_type=mime_type)
+    de.DocumentServiceClient().import_documents(
+        request=de.ImportDocumentsRequest(
+            parent=BRANCH,
+            gcs_source=de.GcsSource(input_uris=[f"gs://{BUCKET}/{path}"], data_schema="content"),
+            reconciliation_mode=de.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL,
         )
     )
 

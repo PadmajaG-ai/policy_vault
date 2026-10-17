@@ -57,7 +57,8 @@ def ask_why(question: str, decision_records: list[dict]) -> dict:
     # on hard questions. 4096 leaves room; the repetition guard below still stops loops.
     config = types.GenerateContentConfig(
         system_instruction=SYSTEM, tools=[search_tool],
-        temperature=0.2, max_output_tokens=4096)
+        temperature=0.2, max_output_tokens=4096,
+        automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True))
 
     for attempt in range(2):  # one retry when the model returns nothing usable
         resp = generate_with_retry(contents=prompt, config=config)

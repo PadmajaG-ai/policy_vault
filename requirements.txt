@@ -4,3 +4,4 @@ google-genai
 python-dotenv
 google-cloud-discoveryengine
 google-cloud-firestore
+google-cloud-storage
