@@ -4,12 +4,12 @@
     "drifts": 2,
     "aligned": 7,
     "needs_review": 0,
-    "policy_only": 0
+    "policy_only": 6
   },
   "findings": [
     {
       "rule_id": "INV-001",
-      "topic": "Class A safety stock cover",
+      "topic": "Class A safety stock",
       "status": "drift",
       "reason": "config is higher than policy",
       "policy_value": "15",
@@ -20,16 +20,16 @@
       "config_location": "Planning > MRP Profiles > Safety Stock",
       "last_changed": "2021-04-07",
       "changed_by": "neha",
-      "root_cause": "The safety stock was temporarily increased from 15 to 30 days due to a global semiconductor shortage, but the scheduled review to revert it in Q4 2021 was never completed.",
+      "root_cause": "The safety stock was temporarily increased from 15 to 30 days due to a global semiconductor shortage, but the scheduled review to revert it in Q4 2021 was never performed.",
       "root_cause_sources": [
         "TKT-2031"
       ],
       "root_cause_found": true,
-      "business_risk": "Holding double the required safety stock ties up working capital and increases inventory holding costs."
+      "business_risk": "Holding excess safety stock increases inventory holding costs and ties up working capital unnecessarily."
     },
     {
       "rule_id": "INV-002",
-      "topic": "Class B safety stock cover",
+      "topic": "Class B safety stock",
       "status": "aligned",
       "reason": "values equal",
       "policy_value": "10",
@@ -57,7 +57,7 @@
       "root_cause": "No record found. Ask the expert.",
       "root_cause_sources": [],
       "root_cause_found": false,
-      "business_risk": "Slow-moving inventory may not be identified in a timely manner, leading to delayed write-offs and excess obsolete stock."
+      "business_risk": "Under-reporting slow-moving inventory delays write-downs and can lead to overvalued stock on financial statements."
     },
     {
       "rule_id": "INV-006",
@@ -75,7 +75,7 @@
     },
     {
       "rule_id": "INV-007",
-      "topic": "Perishable minimum shelf life",
+      "topic": "Perishable shelf life",
       "status": "aligned",
       "reason": "values equal",
       "policy_value": "60",
@@ -131,7 +131,7 @@
     },
     {
       "rule_id": "INV-005",
-      "topic": "Plant Controller write-off approval threshold",
+      "topic": "Write-off Plant Controller approval threshold",
       "status": "aligned",
       "reason": "values equal",
       "policy_value": "100000",
@@ -144,5 +144,66 @@
       "changed_by": "deepa.m"
     }
   ],
-  "policy_only": []
+  "policy_only": [
+    {
+      "policy_source": "3.2",
+      "quote": "Classification is reviewed every financial year by Supply Chain Excellence.",
+      "topic": "Classification review frequency",
+      "matched_rule_id": "none",
+      "value": "1",
+      "unit": "times/year",
+      "match_confidence": "high",
+      "source_type": "policy"
+    },
+    {
+      "policy_source": "6.2",
+      "quote": "Class A and B materials are replenished through planner-approved purchase orders.",
+      "topic": "Class A and B replenishment approval",
+      "matched_rule_id": "none",
+      "value": "planner",
+      "unit": "role",
+      "match_confidence": "high",
+      "source_type": "policy"
+    },
+    {
+      "policy_source": "7.2",
+      "quote": "Larger over-deliveries must be returned or approved by Procurement.",
+      "topic": "Over-delivery approval",
+      "matched_rule_id": "none",
+      "value": "procurement",
+      "unit": "role",
+      "match_confidence": "high",
+      "source_type": "policy"
+    },
+    {
+      "policy_source": "8.2",
+      "quote": "Class B and C materials are counted at least twice a year.",
+      "topic": "Class B and C cycle count frequency",
+      "matched_rule_id": "none",
+      "value": "2",
+      "unit": "times/year",
+      "match_confidence": "high",
+      "source_type": "policy"
+    },
+    {
+      "policy_source": "8.3",
+      "quote": "A full physical stock-take of every storage location is carried out once each financial year.",
+      "topic": "Physical stock-take frequency",
+      "matched_rule_id": "none",
+      "value": "1",
+      "unit": "times/year",
+      "match_confidence": "high",
+      "source_type": "policy"
+    },
+    {
+      "policy_source": "10.2",
+      "quote": "Any write-off document above INR 10,00,000 additionally requires approval by the Chief Financial Officer.",
+      "topic": "Write-off CFO approval threshold",
+      "matched_rule_id": "none",
+      "value": "1000000",
+      "unit": "INR/document",
+      "match_confidence": "high",
+      "source_type": "policy"
+    }
+  ]
 }

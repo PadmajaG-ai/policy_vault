@@ -1,3 +1,6 @@
 pytest
 fpdf2
 pypdf
+playwright
+imageio-ffmpeg
+google-cloud-texttospeech

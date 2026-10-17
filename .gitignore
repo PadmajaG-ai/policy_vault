@@ -20,3 +20,6 @@ Thumbs.db
 
 # Local fallback store for Decision Records
 output/decision_records.json
+
+# Demo video build output
+demo/out/
