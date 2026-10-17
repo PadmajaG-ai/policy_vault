@@ -5,7 +5,7 @@ Grounded on the Vertex AI Search data store (policy + tickets) plus verified Dec
 
 import json
 
-from google.genai import types
+from google.genai import errors, types
 
 from gemini import generate_with_retry
 from search_index import DATA_STORE
@@ -50,18 +50,31 @@ def _diagnose(resp):
         return "no candidates"
 
 
+def _generate(prompt, config):
+    """Call Gemini; if this model rejects the thinking setting, call again without it."""
+    try:
+        return generate_with_retry(contents=prompt, config=config)
+    except errors.ClientError as e:
+        if e.code != 400 or "think" not in str(e).lower():
+            raise
+        print(f"Thinking level not supported here, retrying without it: {e}")
+        return generate_with_retry(contents=prompt, config=config.model_copy(update={"thinking_config": None}))
+
+
 def ask_why(question: str, decision_records: list[dict]) -> dict:
     prompt = (f"Verified decision records:\n{json.dumps(decision_records, indent=1)}\n\n"
               f"Question: {question}")
-    # Thinking tokens count against max_output_tokens: 1024 left nothing for the answer
-    # on hard questions. 4096 leaves room; the repetition guard below still stops loops.
+    # On questions with no evidence the model used 4,500-7,000 thinking tokens hunting for a
+    # reason and hit MAX_TOKENS before answering. Reading a few retrieved documents needs
+    # little reasoning, so thinking is capped (LOW) and the output limit leaves room to answer.
     config = types.GenerateContentConfig(
         system_instruction=SYSTEM, tools=[search_tool],
-        temperature=0.2, max_output_tokens=4096,
+        temperature=0.2, max_output_tokens=8192,
+        thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW),
         automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True))
 
     for attempt in range(2):  # one retry when the model returns nothing usable
-        resp = generate_with_retry(contents=prompt, config=config)
+        resp = _generate(prompt, config)
         text = resp.text or ""
         if text.strip() and not looks_degenerate(text):
             break

@@ -94,5 +94,20 @@ def test_empty_answer_is_retried_once(monkeypatch):
     assert len(calls) == 2 and r["guardrail"] is False and "TKT-1135" in r["answer"]
 
 
+def test_thinking_is_capped_and_falls_back_if_rejected(monkeypatch):
+    from google.genai import errors
+    seen = []
+
+    def fake(**k):
+        seen.append(k["config"].thinking_config)
+        if k["config"].thinking_config is not None:
+            raise errors.ClientError(400, {"error": {"message": "thinking_level is not supported", "status": "INVALID_ARGUMENT"}})
+        return _response("R-002: No recorded rationale found.")
+
+    monkeypatch.setattr(ask_why, "generate_with_retry", fake)
+    r = ask_why.ask_why("q", [])
+    assert seen[0].thinking_level == "LOW" and seen[1] is None and not r["guardrail"]
+
+
 def test_normal_answer_is_not_flagged():
     assert not ask_why.looks_degenerate("R-014\nHidden in 2021.\nSee TKT-1135.")
