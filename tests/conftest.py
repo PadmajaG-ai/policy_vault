@@ -7,11 +7,14 @@ import sys
 from pathlib import Path
 
 import pytest
+from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parent.parent
 PACK = ROOT / "data" / "expense"
 
-# Modules read these at import time; real values come from .env for live tests.
+# Real values from .env first (live tests need them); placeholders only if .env is missing.
+# Offline tests never call the cloud, so placeholders are enough there.
+load_dotenv(ROOT / ".env")
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", "test-project")
 os.environ.setdefault("DATA_STORE_ID", "test-store")
 os.chdir(ROOT)  # the app reads data/ and output/ with relative paths
