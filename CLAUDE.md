@@ -171,9 +171,9 @@ Time budget: ~3 hrs weekdays, 5+ hrs weekends. If a milestone slips by a day, cu
 
 ## 12. Status (update every session)
 
-- **Last updated:** 17 Oct 2026 (submission day)
-- **Done:** extraction, drift + root cause, Vertex AI Search, Ask Why, Gap Finder + interview, Decision Records (Firestore with local fallback), one-page UI, README, test suite.
-- **Verified (17 Oct, gemini-3.5-flash):** `pytest` 64/64 offline; `pytest -m live` 9/9: 4/4 drifts, 0 false alarms, 4/4 root causes, search 3/3, R-014 -> TKT-1135 interview, Ask Why cites DR-0001 and admits no rationale on the USD 75 trap.
-- **Remaining today:** create Firestore DB + Cloud Run IAM (aiplatform.user, discoveryengine.editor, datastore.user); deploy; warm-up run on live URL; demo video; submit.
-- **Cut:** inventory pack, ADK, Agent Engine, file upload.
-- **Problems log:** pip/Python SSL errors -> `pip install --use-feature=truststore`. Console bucket import: project Owner needs explicit `roles/storage.objectViewer`. Extraction prompt example used 100000 (= D4 config value), caught by test and fixed. conftest placeholders overrode .env (live tests hit "test-project"), fixed by loading .env first. R-011 `economy_class` vs `economy` handled by unit-word-insensitive compare.
+- **Last updated:** 18 Oct 2026 (deadline day)
+- **Submitted material ready:** live app (Cloud Run), GitHub repo, demo video (3:50, Google Drive), deck `Human_in_the_loop_Policy_Vault_AI_Builder_Cup.pptx` with all links.
+- **Built:** extraction, drift + root cause, Vertex AI Search, Ask Why, Gap Finder + interview, Decision Records (Firestore, indexed in search via Cloud Storage import), coverage meter, evidence panel, live scan steps, inventory pack (#2), narrated demo-video pipeline (`demo/`).
+- **Verified (18 Oct, gemini-3.5-flash):** 83/83 offline, 13/13 live. Expense 4/4 drifts, 0 false alarms, 4/4 root causes; inventory 2/2, 0, 2/2.
+- **Known gaps (post-hackathon):** reset does not remove records already imported into search; no login/roles; single tenant.
+- **Problems log:** pip/Playwright SSL inspection -> truststore; layout-parser data store rejects inline bytes -> GCS + import; Gemini thinking exhausted max_output_tokens on no-evidence questions -> thinking level LOW; extraction prompt example leaked a config value (caught by test); caste-linked names replaced with neutral ones.

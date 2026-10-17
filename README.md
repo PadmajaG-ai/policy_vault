@@ -4,7 +4,8 @@
 
 Other tools search what was written down. Policy Vault captures what was never written, and checks the policy against what the system actually does.
 
-Live demo: https://policy-vault-240640518337.asia-south1.run.app
+Live demo: https://policy-vault-240640518337.asia-south1.run.app  
+Demo video (3:50): https://drive.google.com/file/d/19nF2-_emvN84OQLu0H5qE1JFzui3Pq-3/view?usp=sharing
 
 ## The problem
 
@@ -23,15 +24,16 @@ Expense, procurement and finance systems are configured over years by a few expe
 
 ## Results on the demo data (measured against a hidden answer key)
 
-| Metric | Result |
-|---|---|
-| Planted drifts detected | **4 / 4** |
-| False alarms | **0** (8 / 8 aligned rules confirmed) |
-| Root causes found in tickets | **4 / 4** (3 tickets found, 1 correctly reported as "no record, ask the expert") |
-| Retrieval (Vertex AI Search) | 3 / 3 expected tickets ranked first |
-| Ask Why test questions | correct on all 4, including a trap question with no evidence |
+| Metric | Expense pack | Inventory pack (same engine) |
+|---|---|---|
+| Planted drifts detected | **4 / 4** | **2 / 2** |
+| False alarms | **0** (8 / 8 aligned confirmed) | **0** (7 / 7 aligned confirmed) |
+| Root causes found in tickets | **4 / 4** (3 tickets, 1 correctly "no record, ask the expert") | **2 / 2** (1 ticket, 1 "ask the expert") |
+| Retrieval (Vertex AI Search) | 3 / 3 expected tickets ranked first | |
+| Interview clue | R-014 linked to TKT-1135 | INV-010 linked to TKT-2058 |
+| Ask Why | correct on all test questions, including a trap question with no evidence | answers the MAT-7730 question before any interview |
 
-The answer key (`data/expense/ground_truth.json`) is read only by `tools/evaluate.py` and never reaches a prompt.
+Measured with gemini-3.5-flash. Each pack's answer key (`data/<pack>/ground_truth.json`) is read only by `tools/evaluate.py` and the tests, and never reaches a prompt.
 
 ## Architecture
 
@@ -71,8 +73,8 @@ python main.py                  # http://localhost:8080
 Tests:
 
 ```bash
-pytest                 # 64 offline tests: comparison logic, guard-rails, app flow, hygiene (no cloud calls)
-pytest -m live -v      # 9 live end-to-end checks against Gemini + Vertex AI Search (proves the demo claims)
+pytest                 # 83 offline tests: comparison logic, guard-rails, both packs, app flow, hygiene (no cloud calls)
+pytest -m live -v      # 13 live end-to-end checks against Gemini + Vertex AI Search (proves the demo claims)
 ```
 
 Command-line tools:
@@ -95,11 +97,15 @@ data/expense/
 ├── tickets.json             13 tickets: some explain rules, most are noise
 ├── expert_answers.json      the simulated retired expert (a human role in the demo)
 └── ground_truth.json        answer key, evaluation only
+
+data/inventory/              domain pack #2, same files: Inventory Policy v2.1, 12 rules, 9 tickets
 ```
+
+The demo video is built by `demo/` (Playwright drives the app, Google Cloud Text-to-Speech narrates); see `demo/README.md`.
 
 ## Beyond the hackathon
 
-- More domain packs: inventory, procurement (Ariba-style), finance, sales discounts
+- More domain packs: procurement (Ariba-style), finance, sales discounts (inventory already runs on the same engine)
 - Real connectors: SAP Concur, SAP Ariba, S/4HANA configuration APIs; ServiceNow/Jira tickets
 - Continuous monitoring: re-scan on every policy or configuration change
 - Change impact check: warn which Decision Records a planned change touches
