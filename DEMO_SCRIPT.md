@@ -3,7 +3,7 @@
 > Rule: we build only what this script needs. If a feature is not in this script, it waits until after 12 October.
 
 **Fictional company:** Kestrel Components Pvt Ltd, a mid-size manufacturer.
-**Situation:** R. Iyer configured the expense system in 2019 and retired on 31 Dec 2025 after two verbal handover sessions and no written documentation (ticket TKT-1202). A new admin, Priya, has inherited the system.
+**Situation:** R. Kumar configured the expense system in 2019 and retired on 31 Dec 2025 after two verbal handover sessions and no written documentation (ticket TKT-1202). A new admin, Priya, has inherited the system.
 
 ---
 
@@ -36,11 +36,11 @@
 
 **On screen:** the Gap Finder lists rules with no explanation anywhere: R-012, R-013, R-014, and drift D2.
 
-**Action:** the Vault interviews R. Iyer about R-014 (vehicle registration field hidden). The key moment is the agent connecting the dots on its own:
+**Action:** the Vault interviews R. Kumar about R-014 (vehicle registration field hidden). The key moment is the agent connecting the dots on its own:
 
 > **Vault:** "The vehicle registration field on the mileage form was hidden on 6 Sep 2021. Three days earlier, TKT-1135 reported mileage lines failing ERP posting with 'field length exceeded'. Are these related?"
 >
-> **R. Iyer:** "Yes. The field overflowed a 10-character field in the ERP interface. I hid it as a quick fix…"
+> **R. Kumar:** "Yes. The field overflowed a 10-character field in the ERP interface. I hid it as a quick fix…"
 
 **On screen:** a new **Decision Record** appears: rule, reason, decided by, date, linked ticket, risk if removed = HIGH, verified by expert ✅.
 
@@ -50,7 +50,7 @@
 
 **Action:** Priya types: *"Can I show the vehicle registration field again? Fleet management wants it."*
 
-**Vault answers:** "Not yet. It was hidden in Sept 2021 because it broke ERP posting (TKT-1135). If you re-enable it before the ERP interface mapping is fixed, mileage payments will fail again. Source: interview with R. Iyer, verified."
+**Vault answers:** "Not yet. It was hidden in Sept 2021 because it broke ERP posting (TKT-1135). If you re-enable it before the ERP interface mapping is fixed, mileage payments will fail again. Source: interview with R. Kumar, verified."
 
 **Voice-over:** "Without the Vault, Priya would have turned it back on and broken employee payments."
 

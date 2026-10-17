@@ -1,7 +1,7 @@
 {
   "_note": "Simulated retired expert used to demo the interview agent. In the demo you (or a teammate) can type these answers live, or the app can play them back. Keep the tone conversational, the way a real person answers.",
   "expert": {
-    "name": "R. Iyer",
+    "name": "R. Kumar",
     "role": "Expense system configuration lead, 2019-2025 (retired 31-Dec-2025)",
     "note": "Fictional person"
   },
@@ -29,7 +29,7 @@
       "rule_id": "R-014",
       "question_hint": "Why is the vehicle registration field hidden on the mileage form?",
       "answer": "Oh, that one caused a mess. In September 2021 the mileage lines started failing when they posted to the ERP. The vehicle registration field was being passed into a text field in the ERP interface that only takes 10 characters, and some people typed registrations with spaces and state names, so it overflowed. The ERP team said fixing the interface would take a month. So as a quick fix I hid the field on the form. We lost the vehicle number, but payments started flowing again. If anyone wants that field back, the ERP interface mapping has to be fixed first, otherwise posting will break again.",
-      "decided_by": "r.iyer with ERP integration team (emergency fix)",
+      "decided_by": "r.kumar with ERP integration team (emergency fix)",
       "decided_on": "2021-09-06",
       "risk_if_removed": "high, ERP posting will fail unless the interface is fixed first",
       "linked_ticket": "TKT-1135"

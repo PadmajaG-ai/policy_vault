@@ -1,6 +1,6 @@
 Ticket TKT-1202 (service_request), created 2025-11-03 by hr.ops
-Title: Knowledge transfer: R. Iyer retiring 31-Dec-2025
+Title: Knowledge transfer: R. Kumar retiring 31-Dec-2025
 
-Description: R. Iyer (expense system configuration lead since 2019) retires on 31-Dec-2025. Please arrange handover of configuration knowledge to the new admin.
+Description: R. Kumar (expense system configuration lead since 2019) retires on 31-Dec-2025. Please arrange handover of configuration knowledge to the new admin.
 
 Resolution: Two handover sessions held. No written documentation produced.

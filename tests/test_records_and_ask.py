@@ -7,7 +7,7 @@ import ask_why
 
 def _record(rule_id):
     return {"rule_id": rule_id, "domain": "expense", "what": "w", "why": "y", "decided_by": "d",
-            "decided_on": "2021", "sources": ["interview:R. Iyer"], "risk_if_removed": "high",
+            "decided_on": "2021", "sources": ["interview:R. Kumar"], "risk_if_removed": "high",
             "risk_note": "n", "confidence": "high", "verified_by_expert": True}
 
 

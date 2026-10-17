@@ -3,5 +3,5 @@ Title: Add duplicate expense detection
 
 Description: Internal audit FY19-20 found 37 duplicate claims (same vendor, same date, same amount) submitted on separate reports, total INR 4.1 lakh. Request an automated audit rule to flag such duplicates before approval.
 
-Resolution: Audit rule 'Duplicate Detection' configured on 11-May-2020 by r.iyer. Flags lines with same amount, same date and same vendor.
+Resolution: Audit rule 'Duplicate Detection' configured on 11-May-2020 by r.kumar. Flags lines with same amount, same date and same vendor.
 Related configuration rules: R-015

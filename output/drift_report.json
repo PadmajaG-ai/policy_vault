@@ -19,7 +19,7 @@
       "policy_quote": "Expense reports must be submitted within 30 days of the end of the trip or the date the expense was incurred.",
       "config_location": "Policies > Submission Rules",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-003",
@@ -33,7 +33,7 @@
       "policy_quote": "An itemised receipt or tax invoice is mandatory for every expense line above INR 500.",
       "config_location": "Policies > Receipt Requirements",
       "last_changed": "2020-11-23",
-      "changed_by": "r.iyer",
+      "changed_by": "r.kumar",
       "root_cause": "No record found. Ask the expert.",
       "root_cause_sources": [],
       "root_cause_found": false,
@@ -71,7 +71,7 @@
       "policy_quote": "International travel: meals are reimbursed at actual cost up to a maximum of USD 75 per person per day, or the local-currency equivalent.",
       "config_location": "Policies > Expense Types > Meals > Limits",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-010",
@@ -85,7 +85,7 @@
       "policy_quote": "Alcohol is not reimbursable under any circumstances, including during client entertainment.",
       "config_location": "Policies > Expense Types > Alcohol",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-004",
@@ -99,7 +99,7 @@
       "policy_quote": "Metro cities (Mumbai, Delhi NCR, Bengaluru, Chennai, Hyderabad, Kolkata, Pune) INR 8,000",
       "config_location": "Policies > Expense Types > Lodging > Limits",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer",
+      "changed_by": "r.kumar",
       "root_cause": "The policy was updated to reduce the metro city hotel nightly cap, but the system configuration was not updated to reflect this change.",
       "root_cause_sources": [
         "TKT-1177"
@@ -119,7 +119,7 @@
       "policy_quote": "All other cities INR 5,000",
       "config_location": "Policies > Expense Types > Lodging > Limits",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-011",
@@ -133,7 +133,7 @@
       "policy_quote": "Air travel must be booked in economy class for any flight shorter than 6 hours.",
       "config_location": "Policies > Travel Class Rules",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-006",
@@ -161,7 +161,7 @@
       "policy_quote": "A cash advance of up to INR 25,000 per trip may be requested where corporate card use is not possible.",
       "config_location": "Policies > Cash Advance",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-007",
@@ -175,7 +175,7 @@
       "policy_quote": "Every expense report must be approved by the employee's line manager.",
       "config_location": "Workflows > Approval > Step 1",
       "last_changed": "2019-07-01",
-      "changed_by": "r.iyer"
+      "changed_by": "r.kumar"
     },
     {
       "rule_id": "R-008",

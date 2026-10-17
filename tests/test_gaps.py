@@ -39,7 +39,7 @@ def test_question_cannot_cite_tickets_outside_the_clues(monkeypatch, rules, tick
     monkeypatch.setattr(gaps.gemini, "generate_json",
                         lambda c, s: {"question": "Related to TKT-1135?", "cited_tickets": ["TKT-1135", "TKT-1042"]})
     gap = {"kind": "undocumented", "summary": "s"}
-    q = gaps.interview_question(rules["R-014"], gap, tickets, "R. Iyer")
+    q = gaps.interview_question(rules["R-014"], gap, tickets, "R. Kumar")
     assert q["cited_tickets"] == ["TKT-1135"]
 
 
@@ -52,16 +52,16 @@ def test_question_prompt_never_contains_the_expert_answer(monkeypatch, rules, ti
         return {"question": "q", "cited_tickets": []}
 
     monkeypatch.setattr(gaps.gemini, "generate_json", fake)
-    gaps.interview_question(rules["R-014"], {"kind": "k", "summary": "s"}, tickets, "R. Iyer")
+    gaps.interview_question(rules["R-014"], {"kind": "k", "summary": "s"}, tickets, "R. Kumar")
     assert "10 characters" not in seen["prompt"]  # a phrase only the expert knows
 
 
 def test_draft_record_shape_and_safety(monkeypatch, rules):
     monkeypatch.setattr(gaps.gemini, "generate_json", lambda c, s: {
-        "what": "w", "why": "y", "decided_by": "r.iyer", "decided_on": "2021-09-06",
+        "what": "w", "why": "y", "decided_by": "r.kumar", "decided_on": "2021-09-06",
         "confirmed_tickets": ["TKT-1135", "TKT-9999"], "risk_if_removed": "high",
         "risk_note": "n", "confidence": "high"})
-    r = gaps.draft_record(rules["R-014"], "q", ["TKT-1135"], "answer", "R. Iyer", "expense")
-    assert r["sources"] == ["TKT-1135", "interview:R. Iyer"]
+    r = gaps.draft_record(rules["R-014"], "q", ["TKT-1135"], "answer", "R. Kumar", "expense")
+    assert r["sources"] == ["TKT-1135", "interview:R. Kumar"]
     assert r["verified_by_expert"] is False  # only a human click verifies it
     assert r["rule_id"] == "R-014" and r["domain"] == "expense"

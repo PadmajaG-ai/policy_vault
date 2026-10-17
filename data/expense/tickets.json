@@ -36,7 +36,7 @@
     "type": "change_request",
     "title": "Add duplicate expense detection",
     "description": "Internal audit FY19-20 found 37 duplicate claims (same vendor, same date, same amount) submitted on separate reports, total INR 4.1 lakh. Request an automated audit rule to flag such duplicates before approval.",
-    "resolution": "Audit rule 'Duplicate Detection' configured on 11-May-2020 by r.iyer. Flags lines with same amount, same date and same vendor.",
+    "resolution": "Audit rule 'Duplicate Detection' configured on 11-May-2020 by r.kumar. Flags lines with same amount, same date and same vendor.",
     "related_rules": ["R-015"]
   },
   {
@@ -124,8 +124,8 @@
     "created": "2025-11-03",
     "raised_by": "hr.ops",
     "type": "service_request",
-    "title": "Knowledge transfer: R. Iyer retiring 31-Dec-2025",
-    "description": "R. Iyer (expense system configuration lead since 2019) retires on 31-Dec-2025. Please arrange handover of configuration knowledge to the new admin.",
+    "title": "Knowledge transfer: R. Kumar retiring 31-Dec-2025",
+    "description": "R. Kumar (expense system configuration lead since 2019) retires on 31-Dec-2025. Please arrange handover of configuration knowledge to the new admin.",
     "resolution": "Two handover sessions held. No written documentation produced.",
     "related_rules": []
   }

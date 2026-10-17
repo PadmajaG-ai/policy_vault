@@ -17,7 +17,7 @@ def client(local_records, offline_search, monkeypatch):
     def fake(contents, schema):
         if "question" in schema["properties"]:
             return {"question": "Was it related to TKT-1135?", "cited_tickets": ["TKT-1135"]}
-        return {"what": "w", "why": "ERP overflow", "decided_by": "r.iyer", "decided_on": "2021-09-06",
+        return {"what": "w", "why": "ERP overflow", "decided_by": "r.kumar", "decided_on": "2021-09-06",
                 "confirmed_tickets": ["TKT-1135"], "risk_if_removed": "high", "risk_note": "n", "confidence": "high"}
 
     import gemini

@@ -52,22 +52,22 @@ def test_search_ranks_expected_tickets_first():
 
 def test_interview_connects_r014_to_tkt1135(rules, tickets):
     import gaps
-    q = gaps.interview_question(rules["R-014"], {"kind": "undocumented", "summary": "vehicle registration hidden"}, tickets, "R. Iyer")
+    q = gaps.interview_question(rules["R-014"], {"kind": "undocumented", "summary": "vehicle registration hidden"}, tickets, "R. Kumar")
     assert "TKT-1135" in q["cited_tickets"] and "TKT-1135" in q["question"]
 
 
 def test_expert_answer_becomes_high_risk_record(rules):
     import gaps
     answer = next(a for a in json.load(open("data/expense/expert_answers.json", encoding="utf-8"))["answers"] if a["rule_id"] == "R-014")
-    r = gaps.draft_record(rules["R-014"], "Is hiding the field related to TKT-1135?", ["TKT-1135"], answer["answer"], "R. Iyer", "expense")
+    r = gaps.draft_record(rules["R-014"], "Is hiding the field related to TKT-1135?", ["TKT-1135"], answer["answer"], "R. Kumar", "expense")
     assert r["risk_if_removed"] == "high" and "TKT-1135" in r["sources"] and "ERP" in r["why"]
 
 
 def test_ask_why_uses_the_decision_record():
     from ask_why import ask_why
     record = {"record_id": "DR-0001", "rule_id": "R-014", "what": "Vehicle registration field hidden on mileage form",
-              "why": "It overflowed a 10-character ERP interface field and broke GL posting", "decided_by": "r.iyer",
-              "decided_on": "2021-09-06", "sources": ["TKT-1135", "interview:R. Iyer"], "risk_if_removed": "high",
+              "why": "It overflowed a 10-character ERP interface field and broke GL posting", "decided_by": "r.kumar",
+              "decided_on": "2021-09-06", "sources": ["TKT-1135", "interview:R. Kumar"], "risk_if_removed": "high",
               "verified_by_expert": True}
     r = ask_why("Can I show the vehicle registration field again? Fleet management wants it.", [record])
     assert not r["guardrail"] and "ERP" in r["answer"] and "DR-0001" in r["sources"]

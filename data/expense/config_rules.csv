@@ -1,18 +1,18 @@
 rule_id,domain,entity,attribute,condition,value,unit,config_location,last_changed,changed_by
 R-001,expense,meal,daily_limit,trip_type=domestic,4000,INR/day,Policies > Expense Types > Meals > Limits,2021-03-12,a.menon
-R-002,expense,meal,daily_limit,trip_type=international,75,USD/day,Policies > Expense Types > Meals > Limits,2019-07-01,r.iyer
-R-003,expense,receipt,required_above,all_expense_types,2000,INR/line,Policies > Receipt Requirements,2020-11-23,r.iyer
-R-004,expense,hotel,nightly_cap,city_tier=metro,10000,INR/night,Policies > Expense Types > Lodging > Limits,2019-07-01,r.iyer
-R-005,expense,hotel,nightly_cap,city_tier=non_metro,5000,INR/night,Policies > Expense Types > Lodging > Limits,2019-07-01,r.iyer
+R-002,expense,meal,daily_limit,trip_type=international,75,USD/day,Policies > Expense Types > Meals > Limits,2019-07-01,r.kumar
+R-003,expense,receipt,required_above,all_expense_types,2000,INR/line,Policies > Receipt Requirements,2020-11-23,r.kumar
+R-004,expense,hotel,nightly_cap,city_tier=metro,10000,INR/night,Policies > Expense Types > Lodging > Limits,2019-07-01,r.kumar
+R-005,expense,hotel,nightly_cap,city_tier=non_metro,5000,INR/night,Policies > Expense Types > Lodging > Limits,2019-07-01,r.kumar
 R-006,expense,mileage,rate_per_km,vehicle=personal_car,12,INR/km,Policies > Mileage > Rates,2023-04-01,s.khan
-R-007,expense,report,approval_level_1,all_reports,line_manager,role,Workflows > Approval > Step 1,2019-07-01,r.iyer
+R-007,expense,report,approval_level_1,all_reports,line_manager,role,Workflows > Approval > Step 1,2019-07-01,r.kumar
 R-008,expense,report,finance_controller_approval_above,report_total,100000,INR/report,Workflows > Approval > Step 2 Condition,2022-08-17,a.menon
-R-009,expense,report,submission_deadline,days_after_trip_end,30,days,Policies > Submission Rules,2019-07-01,r.iyer
-R-010,expense,alcohol,reimbursable,all,false,boolean,Policies > Expense Types > Alcohol,2019-07-01,r.iyer
-R-011,expense,airfare,allowed_class,flight_duration<6h,economy,class,Policies > Travel Class Rules,2019-07-01,r.iyer
-R-012,expense,client_entertainment,extra_approver,attendee_type=government_official,legal_compliance,role,Workflows > Approval > Conditional Step,2019-10-04,r.iyer
-R-013,expense,report,auto_approval_excluded,cost_centre=CC-4410,true,boolean,Workflows > Auto-Approval > Exclusions,2020-02-18,r.iyer
-R-014,expense,mileage_form,field_visibility,field=vehicle_registration,hidden,visibility,Forms > Mileage Entry Form > Fields,2021-09-06,r.iyer
-R-015,expense,audit,duplicate_check,same_amount+same_date+same_vendor,flag,action,Audit Rules > Duplicate Detection,2020-05-11,r.iyer
+R-009,expense,report,submission_deadline,days_after_trip_end,30,days,Policies > Submission Rules,2019-07-01,r.kumar
+R-010,expense,alcohol,reimbursable,all,false,boolean,Policies > Expense Types > Alcohol,2019-07-01,r.kumar
+R-011,expense,airfare,allowed_class,flight_duration<6h,economy,class,Policies > Travel Class Rules,2019-07-01,r.kumar
+R-012,expense,client_entertainment,extra_approver,attendee_type=government_official,legal_compliance,role,Workflows > Approval > Conditional Step,2019-10-04,r.kumar
+R-013,expense,report,auto_approval_excluded,cost_centre=CC-4410,true,boolean,Workflows > Auto-Approval > Exclusions,2020-02-18,r.kumar
+R-014,expense,mileage_form,field_visibility,field=vehicle_registration,hidden,visibility,Forms > Mileage Entry Form > Fields,2021-09-06,r.kumar
+R-015,expense,audit,duplicate_check,same_amount+same_date+same_vendor,flag,action,Audit Rules > Duplicate Detection,2020-05-11,r.kumar
 R-016,expense,audit,weekend_expense_flag,transaction_day=saturday_or_sunday,flag,action,Audit Rules > Date Checks,2023-01-09,s.khan
-R-017,expense,cash_advance,max_amount,per_trip,25000,INR,Policies > Cash Advance,2019-07-01,r.iyer
+R-017,expense,cash_advance,max_amount,per_trip,25000,INR,Policies > Cash Advance,2019-07-01,r.kumar
