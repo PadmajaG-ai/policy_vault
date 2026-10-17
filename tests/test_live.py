@@ -110,3 +110,11 @@ def test_inventory_interview_connects_inv010_to_tkt2058():
     tickets = json.load(open("data/inventory/tickets.json", encoding="utf-8"))
     q = gaps.interview_question(rules["INV-010"], {"kind": "undocumented", "summary": "MAT-7730 excluded from auto reorder"}, tickets, "Deepa M.")
     assert "TKT-2058" in q["cited_tickets"] and "TKT-2058" in q["question"]
+
+
+def test_ask_why_inventory_before_interview_gives_a_real_answer():
+    """Regression: this question returned an empty answer (guardrail) with a 1024-token cap."""
+    from ask_why import ask_why
+    r = ask_why("Can I switch automatic reorder back on for MAT-7730? The planners want fewer manual orders.", [])
+    assert not r["guardrail"], r["answer"]
+    assert "INV-010" in r["answer"] or "MAT-7730" in r["answer"]

@@ -73,12 +73,25 @@ def test_runaway_output_is_replaced(monkeypatch):
     loop = "\n".join(["I will search the tickets."] * 10)
     monkeypatch.setattr(ask_why, "generate_with_retry", lambda **k: _response(loop))
     r = ask_why.ask_why("q", [])
-    assert r["guardrail"] is True and r["answer"].startswith(ask_why.NO_RATIONALE)
+    assert r["guardrail"] is True and r["answer"] == ask_why.NO_ANSWER
+    assert ask_why.NO_RATIONALE not in r["answer"]  # a failure must not claim "no rationale"
 
 
 def test_empty_output_is_replaced(monkeypatch):
     monkeypatch.setattr(ask_why, "generate_with_retry", lambda **k: _response(None))
     assert ask_why.ask_why("q", [])["guardrail"] is True
+
+
+def test_empty_answer_is_retried_once(monkeypatch):
+    calls = []
+
+    def fake(**k):
+        calls.append(1)
+        return _response(None if len(calls) == 1 else "R-014: hidden because of TKT-1135.", ["gs://b/ticket_TKT-1135.txt"])
+
+    monkeypatch.setattr(ask_why, "generate_with_retry", fake)
+    r = ask_why.ask_why("q", [])
+    assert len(calls) == 2 and r["guardrail"] is False and "TKT-1135" in r["answer"]
 
 
 def test_normal_answer_is_not_flagged():
