@@ -5,7 +5,7 @@
 Other tools search what was written down. Policy Vault captures what was never written, and checks the policy against what the system actually does.
 
 Live demo: https://policy-vault-240640518337.asia-south1.run.app  
-Demo video (3:50): https://drive.google.com/file/d/19nF2-_emvN84OQLu0H5qE1JFzui3Pq-3/view?usp=sharing
+Demo video (3:50):https://www.youtube.com/watch?v=f3r76qFhqCY
 
 ## The problem
 
