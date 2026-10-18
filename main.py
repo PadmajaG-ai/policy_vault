@@ -221,7 +221,7 @@ def ask():
         return error(e)
 
 
-@app.get("/healthz")
+@app.get("/health")  # not /healthz: Cloud Run reserves paths ending in "z"
 def health():
     return "ok"
 

@@ -250,8 +250,8 @@ async function loadGaps() {
     $("gapsOut").innerHTML = gaps.map(g => `<div class="gap"><div><b>${esc(g.rule_id)}</b>
         <span class="chip ${g.kind === "undocumented" ? "" : "red"}">${esc(g.kind)}</span><br>
         <span class="muted">${esc(g.summary)}</span></div>
-        ${g.recorded ? `<span class="chip green">✓ Decision Record saved</span>`
-                     : `<button class="secondary" onclick="startInterview('${esc(g.rule_id)}', this)">Interview expert</button>`}</div>`).join("");
+        <div class="row" style="margin-top:0;align-items:center">${g.recorded ? `<span class="chip green">✓ Decision Record saved</span>` : ""}
+          <button class="secondary" onclick="startInterview('${esc(g.rule_id)}', this)">${g.recorded ? "Interview again" : "Interview expert"}</button></div></div>`).join("");
   } catch (e) { $("gapsOut").innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
 

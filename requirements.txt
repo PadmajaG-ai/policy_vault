@@ -1,7 +1,8 @@
-flask
-gunicorn
-google-genai
-python-dotenv
-google-cloud-discoveryengine
-google-cloud-firestore
-google-cloud-storage
+# Pinned to the versions verified by the offline and live test suites (18 Oct 2026)
+Flask==3.1.3
+gunicorn==26.2.0
+google-genai==2.28.0
+python-dotenv==1.2.4
+google-cloud-discoveryengine==0.20.5
+google-cloud-firestore==2.34.1
+google-cloud-storage==3.17.1

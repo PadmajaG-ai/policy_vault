@@ -42,6 +42,9 @@ def test_full_interview_flow(client):
     assert saved["verified_by_expert"] is True and saved["record_id"] == "DR-0001"
     gap = next(g for g in client.get("/api/gaps").json if g["rule_id"] == "R-014")
     assert gap["recorded"] is True
+    # a second judge can still run the interview: re-interviewing keeps the same record id
+    again = client.post("/api/records", json=dict(draft)).json
+    assert again["record_id"] == "DR-0001"
     client.delete("/api/records")
     assert client.get("/api/records").json["records"] == []
 
@@ -64,6 +67,20 @@ def test_ask_errors_are_reported_not_crashed(client, monkeypatch):
     monkeypatch.setattr(main, "ask_why", lambda q, r: (_ for _ in ()).throw(RuntimeError("quota")))
     r = client.post("/api/ask", json={"question": "q"})
     assert r.status_code == 500 and "quota" in r.json["error"]
+
+
+def test_health_endpoint(client):
+    assert client.get("/health").status_code == 200
+
+
+def test_recorded_gaps_can_be_interviewed_again():
+    html = (ROOT / "templates" / "index.html").read_text(encoding="utf-8")
+    assert "Interview again" in html
+
+
+def test_requirements_are_pinned():
+    lines = [l for l in (ROOT / "requirements.txt").read_text().splitlines() if l and not l.startswith("#")]
+    assert lines and all("==" in l for l in lines)
 
 
 def test_page_escapes_html():
