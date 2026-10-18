@@ -23,3 +23,6 @@ output/decision_records.json
 
 # Demo video build output
 demo/out/
+
+# Office lock files
+~$*
