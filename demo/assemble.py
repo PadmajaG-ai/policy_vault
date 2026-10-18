@@ -5,6 +5,7 @@ Trims only the idle waits record.py marked (no narration playing), then places e
 narration clip at its recorded moment on the trimmed timeline.
 """
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -12,7 +13,7 @@ from pathlib import Path
 import imageio_ffmpeg
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "out"
+OUT = Path(os.environ.get("DEMO_OUT", HERE / "out"))
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 
@@ -47,7 +48,9 @@ def main():
     out = OUT / "policy_vault_demo.mp4"
     cmd = [FFMPEG, "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(parts),
            "-map", "[v]", "-map", "[a]", "-t", f"{total:.2f}",
-           "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", "25",
+           # High quality for screen content, so text stays sharp after YouTube re-encodes it
+           "-c:v", "libx264", "-preset", "slow", "-crf", "16", "-pix_fmt", "yuv420p", "-r", "30",
+           "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
            "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", str(out)]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode:

@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from script import LINES  # noqa: E402
 
-OUT = Path(__file__).resolve().parent / "out" / "audio"
+OUT = Path(os.environ.get("DEMO_OUT", Path(__file__).resolve().parent / "out")) / "audio"
 DEFAULT_VOICE = "en-IN-Neural2-A"  # Indian English, female
 RATE = 24000
 

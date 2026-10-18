@@ -17,3 +17,6 @@ python demo/assemble.py              # -> demo/out/policy_vault_demo.mp4
 - Narration lives in `demo/script.py`. Edit a line, re-run `voice.py` (only changed lines are re-synthesised), then record + assemble.
 - Every result on screen is live: real Gemini calls, real comparisons. Only idle waiting with no narration is trimmed, and the video shows a "waiting time shortened" note while a live call runs.
 - `python demo/voice.py --silent` makes silent clips timed by word count, for a dry run without the TTS API.
+- Video quality: `record.py` captures Chrome's own rendered frames at 2560x1440 (2x pixel density, sharp text)
+  and `assemble.py` encodes H.264 at CRF 16. Uploading 1440p makes YouTube use its higher-quality encode.
+  `--lowres` falls back to Playwright's built-in 720p recorder. Frames need about 1 GB of free disk space.

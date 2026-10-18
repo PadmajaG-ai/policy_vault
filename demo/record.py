@@ -5,13 +5,21 @@ Run (app running locally or the Cloud Run URL):
     python demo/record.py --url https://policy-vault-240640518337.asia-south1.run.app --show
 
 Needs demo/out/audio/durations.json from demo/voice.py (narration timing drives the pacing).
-Writes demo/out/video/*.webm and demo/out/timeline.json for demo/assemble.py.
+Writes demo/out/video/screen_hq.mp4 and demo/out/timeline.json for demo/assemble.py.
+
+High quality (default): Chrome's own rendered frames are captured through the DevTools screencast
+at 2x pixel density (2560x1440, sharp text), then stitched with their exact timestamps.
+--lowres uses Playwright's built-in recorder instead (1280x720, ~1 Mbps, softer).
 
 Every result on screen comes from the live app: real Gemini calls, real comparisons.
 Only idle waiting time (no narration playing) is marked for trimming, and the video says so.
 """
 import argparse
+import base64
 import json
+import os
+import shutil
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -22,8 +30,9 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from script import CAPTION, KEYS  # noqa: E402
 
-OUT = HERE / "out"
-W, H = 1280, 720
+OUT = Path(os.environ.get("DEMO_OUT", HERE / "out"))
+W, H = 1280, 720          # CSS layout size: the page looks exactly as on a 1280x720 screen
+SCALE = 2                 # device pixels per CSS pixel -> frames are 2560x1440
 
 OVERLAY = r"""
 window.__demo = (() => {
@@ -79,6 +88,7 @@ class Director:
     def __init__(self, page, durations):
         self.page, self.dur = page, durations
         self.t0 = time.monotonic()
+        self.t0_wall = time.time()  # screencast frames carry wall-clock timestamps
         self.events, self.cuts = [], []
         self.busy_until = 0.0
 
@@ -131,7 +141,61 @@ class Director:
         loc.click()
 
 
-def run(url, show):
+class Screencast:
+    """Collects Chrome's rendered frames (JPEG) with their timestamps via the DevTools protocol."""
+
+    def __init__(self, ctx, page, folder):
+        self.folder = folder
+        shutil.rmtree(folder, ignore_errors=True)
+        folder.mkdir(parents=True)
+        self.frames = []
+        self.cdp = ctx.new_cdp_session(page)
+        self.cdp.on("Page.screencastFrame", self._on_frame)
+
+    def _on_frame(self, p):
+        name = f"{len(self.frames):06d}.jpg"
+        (self.folder / name).write_bytes(base64.b64decode(p["data"]))
+        self.frames.append((p["metadata"]["timestamp"], name))
+        self.cdp.send("Page.screencastFrameAck", {"sessionId": p["sessionId"]})
+
+    def start(self):
+        self.cdp.send("Page.startScreencast", {"format": "jpeg", "quality": 95, "everyNthFrame": 1,
+                                               "maxWidth": W * SCALE, "maxHeight": H * SCALE})
+
+    def stop(self):
+        self.cdp.send("Page.stopScreencast")
+
+    def to_video(self, t0_wall, end, out_path):
+        """Frames arrive only when the screen changes; each one is held until the next."""
+        import imageio_ffmpeg
+        frames = sorted((ts - t0_wall, name) for ts, name in self.frames)
+        if not frames:
+            sys.exit("No screencast frames were captured")
+        before = [f for f in frames if f[0] <= 0]
+        frames = ([(0.0, before[-1][1])] if before else []) + [f for f in frames if f[0] > 0]
+        frames[0] = (0.0, frames[0][1])
+        lines = []
+        for i, (t, name) in enumerate(frames):
+            nxt = frames[i + 1][0] if i + 1 < len(frames) else max(end, t + 0.04)
+            lines += [f"file '{name}'", f"duration {max(nxt - t, 0.001):.4f}"]
+        lines.append(f"file '{frames[-1][1]}'")
+        (self.folder / "frames.txt").write_text("\n".join(lines))
+        w, h = W * SCALE, H * SCALE
+        cmd = [imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
+               "-i", str(self.folder / "frames.txt"),
+               # JPEG frames are full-range colour; convert to standard video range so players show true contrast
+               "-vf", f"scale={w}:{h}:force_original_aspect_ratio=decrease:in_range=pc:out_range=tv,"
+                      f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2,fps=30,format=yuv420p",
+               "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+               "-c:v", "libx264", "-preset", "veryfast", "-crf", "12", str(out_path)]
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        if r.returncode:
+            sys.exit(r.stderr)
+        print(f"  stitched {len(frames)} frames at {w}x{h}")
+        return out_path
+
+
+def run(url, show, lowres=False):
     durations = json.loads((OUT / "audio" / "durations.json").read_text())
     missing = [k for k in KEYS if k not in durations]
     if missing:
@@ -139,13 +203,19 @@ def run(url, show):
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=not show)
-        ctx = browser.new_context(viewport={"width": W, "height": H}, record_video_dir=str(OUT / "video"),
-                                  record_video_size={"width": W, "height": H})
+        if lowres:
+            ctx = browser.new_context(viewport={"width": W, "height": H}, record_video_dir=str(OUT / "video"),
+                                      record_video_size={"width": W, "height": H})
+        else:
+            ctx = browser.new_context(viewport={"width": W, "height": H}, device_scale_factor=SCALE)
         ctx.add_init_script(OVERLAY)
         for pack in ("expense", "inventory"):  # fresh demo: no Decision Records yet
             ctx.request.delete(f"{url}/api/records?pack={pack}")
         page = ctx.new_page()
+        cast = None if lowres else Screencast(ctx, page, OUT / "frames")
         d = Director(page, durations)
+        if cast:
+            cast.start()
         page.goto(f"{url}/?pack=expense", wait_until="networkidle")
         page.evaluate("t => __demo.badge(t)", USER)
 
@@ -248,9 +318,15 @@ def run(url, show):
         d.pause(1.5)
         end = d.now()
 
-        video = page.video.path()
+        if cast:
+            cast.stop()
+            page.wait_for_timeout(300)
+        video = page.video.path() if lowres else None
         ctx.close()
         browser.close()
+    if cast:
+        (OUT / "video").mkdir(parents=True, exist_ok=True)
+        video = cast.to_video(d.t0_wall, end, OUT / "video" / "screen_hq.mp4")
 
     timeline = {"events": d.events, "cuts": [[0.0, round(lead_in, 2)]] + d.cuts, "end": round(end, 2),
                 "video": str(video)}
@@ -263,5 +339,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://localhost:8080")
     ap.add_argument("--show", action="store_true", help="show the browser while recording")
+    ap.add_argument("--lowres", action="store_true", help="Playwright's built-in 720p recorder (softer)")
     a = ap.parse_args()
-    run(a.url.rstrip("/"), a.show)
+    run(a.url.rstrip("/"), a.show, a.lowres)
